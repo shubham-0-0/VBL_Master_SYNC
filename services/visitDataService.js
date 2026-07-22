@@ -145,8 +145,64 @@ async function fetchAndSaveVisitData(dateStr) {
   return transformed;
 }
 
+// Allow the stored procedure plenty of time on large volumes (mirrors s3Service).
+const SYNC_QUERY_TIMEOUT_MS = 30 * 60 * 1000; // 30 minutes
+
+async function syncVisitDataToDatabase(rows) {
+  const connection = await mysql.createConnection({
+    ...config.mysql,
+    connectTimeout: 30 * 1000
+  });
+
+  try {
+    const sessionTimeoutSecs = Math.ceil(SYNC_QUERY_TIMEOUT_MS / 1000);
+    await connection.query(
+      `SET SESSION wait_timeout = ${sessionTimeoutSecs},
+                   net_read_timeout = ${sessionTimeoutSecs},
+                   net_write_timeout = ${sessionTimeoutSecs}`
+    );
+
+    await connection.beginTransaction();
+
+    // TODO: confirm tempTable name in config.visitData.tempTable.
+    await connection.query(`TRUNCATE TABLE ${config.visitData.tempTable}`);
+    log(`🗑️ Cleared ${config.visitData.tempTable} before inserting new visit data`);
+
+    // TODO: insertColumns / keysToStore in config must match the real table schema.
+    const columns = config.visitData.insertColumns;
+    const insertQuery = `INSERT INTO ${config.visitData.tempTable} (${columns.join(', ')}) VALUES ?`;
+    const values = rows.map((row) => config.visitData.keysToStore.map((key) => row[key] ?? null));
+
+    const INSERT_BATCH_SIZE = 5000;
+    for (let i = 0; i < values.length; i += INSERT_BATCH_SIZE) {
+      const batch = values.slice(i, i + INSERT_BATCH_SIZE);
+      // eslint-disable-next-line no-await-in-loop
+      await connection.query(insertQuery, [batch]);
+      log(`🗃️ Inserted ${Math.min(i + batch.length, values.length)}/${values.length} rows into ${config.visitData.tempTable}`);
+    }
+
+    // TODO: replace with the real stored procedure name and action payload for visit data.
+    const obj = { action: 'VISIT_DATA' };
+    const [procedureResults] = await connection.query({
+      sql: `CALL sp_sync_attendance_master('${JSON.stringify(obj)}')`,
+      timeout: SYNC_QUERY_TIMEOUT_MS
+    });
+    log(`📊 Visit-data stored procedure result: ${JSON.stringify(procedureResults)}`);
+
+    await connection.commit();
+    log('✅ Visit-data transaction committed successfully');
+  } catch (err) {
+    await connection.rollback();
+    log(`❌ Visit-data DB error: ${err.message}. Transaction rolled back.`);
+    throw err;
+  } finally {
+    await connection.end();
+  }
+}
+
 module.exports = {
   buildPrefix,
   transformVisitRow,
-  fetchAndSaveVisitData
+  fetchAndSaveVisitData,
+  syncVisitDataToDatabase
 };
