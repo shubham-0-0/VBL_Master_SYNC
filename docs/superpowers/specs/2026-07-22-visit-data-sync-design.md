@@ -20,8 +20,10 @@ two are not coupled.
 - **Bucket:** reuse the existing `config.aws.s3.bucket` (`AWS_BUCKET_NAME`).
 - **Key prefix:** `project-vega-hr/SPEED/VISIT_DATA/YYYY/MM/DD/`
   where `YYYY`/`MM`/`DD` are zero-padded numeric (e.g. `2026/07/22`).
-- **Files:** `.csv`. When multiple files exist under the prefix, pick the one
-  with the newest `LastModified`.
+- **Files:** filenames are **not known ahead of time**. Only the dated prefix
+  `project-vega-hr/SPEED/VISIT_DATA/YYYY/MM/DD/` is fixed; the file(s) under it are
+  **discovered at runtime** via `ListObjectsV2Command`. Filter results to `.csv`,
+  and when multiple exist, pick the one with the newest `LastModified`.
 
 ## Database Flow
 

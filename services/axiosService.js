@@ -91,6 +91,7 @@ async function fetchDistributorData(dateOrRange) {
     console.time("fetchDistributorData");
     
     let apiUrl = getApiUrl(dateOrRange);
+    console.log('DBR URL',apiUrl)
     const response = await requestWithRetry(apiUrl, {
       'Authorization': getAuthHeader(),
       'Content-Type': 'application/json'
@@ -123,6 +124,8 @@ async function fetchDistributorData(dateOrRange) {
       status:row.customergrp3Des,
       Distributor_Type:row.customerattribute3Desc,
       BusinessUnit:row.customerattribute10Desc,
+      MUGM:row.salesdistrictDesc,
+      COO:'', // Assuming COO is not provided in the API response
       upload_type: 'vbl',
       uploaded_at: new Date().toISOString().slice(0, 19).replace('T', ' ')
     }));
@@ -147,7 +150,8 @@ async function syncDistributorDataToDatabase(data) {
       const insertQuery = `
         INSERT INTO integration_dbr (
           Distributor_Code, DBR_Name, Address, Latitude, Longitude,
-          status, Distributor_Type, upload_type, uploaded_at
+          status, Distributor_Type, upload_type, uploaded_at,
+          businessunit_name,COO,MUGM
         )
         VALUES ?
       `;
@@ -161,7 +165,10 @@ async function syncDistributorDataToDatabase(data) {
         row.status,
         row.Distributor_Type,
         row.upload_type,
-        row.uploaded_at
+        row.uploaded_at,
+        row.BusinessUnit,
+        row.COO,
+        row.MUGM
       ]);
 
       await connection.query(insertQuery, [values]);
@@ -202,6 +209,7 @@ async function syncDistributorData(dateOrRange) {
     //await cleanupDirectories([config.directories.upload]);
   } catch (error) {
     log(`❌ Error in distributor data sync: ${error.message}`);
+    throw error;
   }
 }
 
