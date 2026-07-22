@@ -34,6 +34,19 @@ module.exports = {
   directories: {
     upload: 'upload'
   },
+  visitData: {
+    // Fixed S3 key prefix base; the dated part /YYYY/MM/DD/ is appended at runtime.
+    s3PrefixBase: 'project-vega-hr/SPEED/VISIT_DATA',
+    // Local directory where the raw downloaded CSV is saved.
+    rawDir: 'upload/visit_data',
+    // TODO: confirm the real temp table name for visit data.
+    tempTable: 'integration_visit_data_temp',
+    // TODO: replace with the real DB column list for the temp table INSERT.
+    // Order MUST match keysToStore below.
+    insertColumns: ['raw_line_no', 'upload_type', 'uploaded_at'],
+    // TODO: replace with the real transformed row keys. Order MUST match insertColumns.
+    keysToStore: ['raw_line_no', 'upload_type', 'uploaded_at']
+  },
   keysToStore: [
     "Distributor_Code", "DBR_Name", "Customer_Code", "Customer_Name", "Route_Code",
     "Address", "Latitude", "Longitude", "Visit_Frequency",
