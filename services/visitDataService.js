@@ -200,9 +200,95 @@ async function syncVisitDataToDatabase(rows) {
   }
 }
 
+async function syncVisitData(dateStr) {
+  try {
+    const rows = await fetchAndSaveVisitData(dateStr);
+    if (rows.length > 0) {
+      await syncVisitDataToDatabase(rows);
+    } else {
+      log('⚠️ No visit data to insert; skipping DB sync.');
+    }
+  } catch (error) {
+    log(`❌ Error in visit-data sync for ${dateStr}: ${error.message}`);
+    throw error;
+  }
+}
+
+async function syncVisitDataRange(startDate, endDate) {
+  const start = moment(startDate);
+  const end = moment(endDate);
+
+  if (!start.isValid() || !end.isValid()) {
+    throw new Error('Invalid date format. Please use YYYY-MM-DD');
+  }
+  if (end.isBefore(start)) {
+    throw new Error('endDate must be after startDate');
+  }
+
+  log(`🔄 Starting visit-data sync for date range: ${startDate} to ${endDate}`);
+
+  const results = [];
+  const currentDate = start.clone();
+  let totalProcessed = 0;
+  let totalErrors = 0;
+
+  while (currentDate.isSameOrBefore(end)) {
+    const dateStr = currentDate.format('YYYY-MM-DD');
+    log(`📅 Processing visit-data date: ${dateStr}`);
+    try {
+      // eslint-disable-next-line no-await-in-loop
+      await syncVisitData(dateStr);
+      totalProcessed++;
+      results.push({ date: dateStr, status: 'success', message: `Successfully synced visit data for ${dateStr}` });
+      log(`✅ Successfully processed visit-data date: ${dateStr}`);
+    } catch (error) {
+      totalErrors++;
+      results.push({ date: dateStr, status: 'error', message: error.message });
+      log(`❌ Error processing visit-data date ${dateStr}: ${error.message}`);
+    }
+    currentDate.add(1, 'days');
+  }
+
+  log(`✅ Visit-data range sync completed. Processed: ${totalProcessed}, Errors: ${totalErrors}`);
+
+  return {
+    startDate,
+    endDate,
+    totalDates: results.length,
+    successful: totalProcessed,
+    failed: totalErrors,
+    results
+  };
+}
+
+// Prefer today's date if its S3 prefix contains files, else fall back to yesterday.
+async function resolveLatestVisitDate() {
+  const today = moment().format('YYYY-MM-DD');
+  const yesterday = moment().subtract(1, 'days').format('YYYY-MM-DD');
+  try {
+    const { Contents } = await s3Client.send(new ListObjectsV2Command({
+      Bucket: config.aws.s3.bucket,
+      Prefix: buildPrefix(today)
+    }));
+    const hasToday = (Contents || []).some((f) => f.Key.endsWith('.csv'));
+    if (hasToday) {
+      log(`🗓️ Visit-data: today's folder (${today}) has files; using ${today}`);
+      return today;
+    }
+    log(`🗓️ Visit-data: today's folder (${today}) empty; falling back to ${yesterday}`);
+    return yesterday;
+  } catch (error) {
+    log(`⚠️ Visit-data: could not check today's folder (${error.message}); falling back to ${yesterday}`);
+    return yesterday;
+  }
+}
+
 module.exports = {
   buildPrefix,
   transformVisitRow,
   fetchAndSaveVisitData,
-  syncVisitDataToDatabase
+  syncVisitDataToDatabase,
+  syncVisitData,
+  syncVisitDataRange,
+  resolveLatestVisitDate
 };
