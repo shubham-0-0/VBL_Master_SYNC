@@ -6,6 +6,7 @@ const { initializeCronJobs } = require('./cron/jobs');
 const healthRoutes = require('./routes/health');
 const s3Routes = require('./routes/s3');
 const distributorRoutes = require('./routes/distributor');
+const visitDataRoutes = require('./routes/visitData');
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use('/health', healthRoutes);
 app.use('/s3', s3Routes);
 app.use('/distributor', distributorRoutes);
+app.use('/visit-data', visitDataRoutes);
 
 // Start server
 app.listen(port, () => {
