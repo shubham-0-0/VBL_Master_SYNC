@@ -2,7 +2,7 @@ const cron = require('node-cron');
 const moment = require('moment');
 const { syncS3DataRange } = require('../services/s3Service');
 const { syncDataRange } = require('../services/distributorService');
-const { syncVisitData, resolveLatestVisitDate } = require('../services/visitDataService');
+const { syncVisitData } = require('../services/visitDataService');
 const { log } = require('../utils/logger');
 
 function initializeCronJobs() {
@@ -36,10 +36,8 @@ function initializeCronJobs() {
   cron.schedule('00 5 * * *', async () => {
     try {
       log('🕔 Running scheduled Visit Data sync at 5 AM');
-      // Prefer today's data if available, else yesterday's (whichever is latest).
-      const targetDate = await resolveLatestVisitDate();
-      await syncVisitData(targetDate);
-      log(`✅ Scheduled Visit Data sync completed successfully for ${targetDate}`);
+      await syncVisitData();
+      log('✅ Scheduled Visit Data sync completed successfully');
     } catch (error) {
       log(`❌ Scheduled Visit Data sync error: ${error.message}`);
     }

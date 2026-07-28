@@ -35,17 +35,23 @@ module.exports = {
     upload: 'upload'
   },
   visitData: {
-    // Fixed S3 key prefix base; the dated part /YYYY/MM/DD/ is appended at runtime.
-    s3PrefixBase: 'project-vega-hr/SPEED/VISIT_DATA',
+    // Bucket is configured separately; this is the key prefix inside that bucket.
+    s3PrefixBase: 'SPEED/VISIT_DATA',
     // Local directory where the raw downloaded CSV is saved.
     rawDir: 'upload/visit_data',
-    // TODO: confirm the real temp table name for visit data.
     tempTable: 'integration_visit_data_temp',
-    // TODO: replace with the real DB column list for the temp table INSERT.
     // Order MUST match keysToStore below.
-    insertColumns: ['raw_line_no', 'upload_type', 'uploaded_at'],
-    // TODO: replace with the real transformed row keys. Order MUST match insertColumns.
-    keysToStore: ['raw_line_no', 'upload_type', 'uploaded_at']
+    insertColumns: [
+      'DIST_CD', 'SLSMAN_CD', 'VISIT_DT', 'CUST_CD', 'VISIT_ID', 'VISIT_KEY',
+      'TIME_IN', 'TIME_OUT', 'TIME_SPENT', 'SLSORD_AMT', 'CSHORD_AMT',
+      'VISIT_TYPE', 'VISIT_IND', 'HHT_SUBMIT_DT', 'TIME_OUT_LONG', 'TIME_OUT_LAT'
+    ],
+    // Order MUST match insertColumns above.
+    keysToStore: [
+      'DIST_CD', 'SLSMAN_CD', 'VISIT_DT', 'CUST_CD', 'VISIT_ID', 'VISIT_KEY',
+      'TIME_IN', 'TIME_OUT', 'TIME_SPENT', 'SLSORD_AMT', 'CSHORD_AMT',
+      'VISIT_TYPE', 'VISIT_IND', 'HHT_SUBMIT_DT', 'TIME_OUT_LONG', 'TIME_OUT_LAT'
+    ]
   },
   keysToStore: [
     "Distributor_Code", "DBR_Name", "Customer_Code", "Customer_Name", "Route_Code",

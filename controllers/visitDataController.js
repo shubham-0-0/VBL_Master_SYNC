@@ -1,26 +1,13 @@
-const moment = require('moment');
 const visitDataService = require('../services/visitDataService');
 const { log } = require('../utils/logger');
 
 const syncVisitData = async (req, res) => {
   try {
-    const { date, startDate, endDate } = req.body || {};
-
-    let rangeStart;
-    let rangeEnd;
-    if (startDate && endDate) {
-      rangeStart = startDate;
-      rangeEnd = endDate;
-    } else {
-      rangeStart = rangeEnd = date || moment().format('YYYY-MM-DD');
-    }
-
-    log(`🔄 Starting visit-data sync for date range: ${rangeStart} to ${rangeEnd}...`);
-    const result = await visitDataService.syncVisitDataRange(rangeStart, rangeEnd);
+    const result = await visitDataService.syncVisitData();
 
     res.json({
       status: 'success',
-      message: `Visit-data sync completed for date range ${rangeStart} to ${rangeEnd}`,
+      message: 'Visit-data sync completed using the latest discovered CSV file',
       summary: result
     });
   } catch (error) {

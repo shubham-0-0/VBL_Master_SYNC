@@ -16746,3 +16746,684 @@
 [2026-07-22T01:56:12.737Z] ✅ Transaction committed successfully
 [2026-07-22T01:56:12.738Z] ✅ Successfully processed date: 2026-07-22
 [2026-07-22T01:56:12.739Z] ✅ Date range sync completed. Processed: 8, Errors: 0
+[2026-07-22T04:56:56.049Z] 🚀 Server running on port 3001
+[2026-07-22T04:56:56.052Z] ⏰ Cron jobs initialized:
+[2026-07-22T04:56:56.053Z]    - S3 Sync: Daily at 7:00 AM
+[2026-07-22T04:56:56.053Z]    - Distributor Sync: Daily at 6:30 AM
+[2026-07-22T04:56:56.053Z]    - Visit Data Sync: Daily at 5:00 AM
+[2026-07-22T04:57:08.663Z] 🔄 Starting visit-data sync for date range: 2026-07-22 to 2026-07-22...
+[2026-07-22T04:57:08.664Z] 🔄 Starting visit-data sync for date range: 2026-07-22 to 2026-07-22...
+[2026-07-22T04:57:08.666Z] 🔄 Starting visit-data sync for date range: 2026-07-22 to 2026-07-22
+[2026-07-22T04:57:08.667Z] 📅 Processing visit-data date: 2026-07-22
+[2026-07-22T04:57:08.667Z] 🔎 Discovering visit-data files under: project-vega-hr/SPEED/VISIT_DATA/2026/07/22/
+[2026-07-22T04:57:09.027Z] ⚠️ No CSV files found under project-vega-hr/SPEED/VISIT_DATA/2026/07/22/
+[2026-07-22T04:57:09.027Z] ⚠️ No visit data to insert; skipping DB sync.
+[2026-07-22T04:57:09.027Z] ✅ Successfully processed visit-data date: 2026-07-22
+[2026-07-22T04:57:09.027Z] ✅ Visit-data range sync completed. Processed: 1, Errors: 0
+[2026-07-22T04:59:18.122Z] 🔄 Starting visit-data sync for date range: 2026-07-21 to 2026-07-21...
+[2026-07-22T04:59:18.122Z] 🔄 Starting visit-data sync for date range: 2026-07-21 to 2026-07-21...
+[2026-07-22T04:59:18.123Z] 🔄 Starting visit-data sync for date range: 2026-07-21 to 2026-07-21
+[2026-07-22T04:59:18.123Z] 📅 Processing visit-data date: 2026-07-21
+[2026-07-22T04:59:18.123Z] 🔎 Discovering visit-data files under: project-vega-hr/SPEED/VISIT_DATA/2026/07/21/
+[2026-07-22T04:59:18.320Z] ⚠️ No CSV files found under project-vega-hr/SPEED/VISIT_DATA/2026/07/21/
+[2026-07-22T04:59:18.320Z] ⚠️ No visit data to insert; skipping DB sync.
+[2026-07-22T04:59:18.321Z] ✅ Successfully processed visit-data date: 2026-07-21
+[2026-07-22T04:59:18.322Z] ✅ Visit-data range sync completed. Processed: 1, Errors: 0
+[2026-07-22T05:01:50.226Z] 🔄 Starting visit-data sync for date range: 2026-07-21 to 2026-07-21...
+[2026-07-22T05:01:50.227Z] 🔄 Starting visit-data sync for date range: 2026-07-21 to 2026-07-21...
+[2026-07-22T05:01:50.227Z] 🔄 Starting visit-data sync for date range: 2026-07-21 to 2026-07-21
+[2026-07-22T05:01:50.227Z] 📅 Processing visit-data date: 2026-07-21
+[2026-07-22T05:01:50.227Z] 🔎 Discovering visit-data files under: project-vega-hr/SPEED/VISIT_DATA/2026/07/21/
+[2026-07-22T05:01:50.498Z] ⚠️ No CSV files found under project-vega-hr/SPEED/VISIT_DATA/2026/07/21/
+[2026-07-22T05:01:50.498Z] ⚠️ No visit data to insert; skipping DB sync.
+[2026-07-22T05:01:50.498Z] ✅ Successfully processed visit-data date: 2026-07-21
+[2026-07-22T05:01:50.498Z] ✅ Visit-data range sync completed. Processed: 1, Errors: 0
+[2026-07-22T05:02:07.744Z] 🚀 Server running on port 3001
+[2026-07-22T05:02:07.746Z] ⏰ Cron jobs initialized:
+[2026-07-22T05:02:07.747Z]    - S3 Sync: Daily at 7:00 AM
+[2026-07-22T05:02:07.747Z]    - Distributor Sync: Daily at 6:30 AM
+[2026-07-22T05:02:07.747Z]    - Visit Data Sync: Daily at 5:00 AM
+[2026-07-22T05:02:17.325Z] 🔄 Starting visit-data sync for date range: 2026-07-21 to 2026-07-21...
+[2026-07-22T05:02:17.326Z] 🔄 Starting visit-data sync for date range: 2026-07-21 to 2026-07-21...
+[2026-07-22T05:02:17.327Z] 🔄 Starting visit-data sync for date range: 2026-07-21 to 2026-07-21
+[2026-07-22T05:02:17.327Z] 📅 Processing visit-data date: 2026-07-21
+[2026-07-22T05:02:17.328Z] 🔎 Discovering visit-data files under: project-vega-hr/SPEED/VISIT_DATA/2026/07/21/
+[2026-07-22T05:02:18.401Z] ⚠️ No CSV files found under project-vega-hr/SPEED/VISIT_DATA/2026/07/21/
+[2026-07-22T05:02:18.401Z] ⚠️ No visit data to insert; skipping DB sync.
+[2026-07-22T05:02:18.401Z] ✅ Successfully processed visit-data date: 2026-07-21
+[2026-07-22T05:02:18.402Z] ✅ Visit-data range sync completed. Processed: 1, Errors: 0
+[2026-07-22T05:03:20.424Z] 🚀 Server running on port 3001
+[2026-07-22T05:03:20.426Z] ⏰ Cron jobs initialized:
+[2026-07-22T05:03:20.426Z]    - S3 Sync: Daily at 7:00 AM
+[2026-07-22T05:03:20.426Z]    - Distributor Sync: Daily at 6:30 AM
+[2026-07-22T05:03:20.426Z]    - Visit Data Sync: Daily at 5:00 AM
+[2026-07-22T05:03:26.719Z] 🔄 Starting visit-data sync for date range: 2026-07-21 to 2026-07-21...
+[2026-07-22T05:03:26.719Z] 🔄 Starting visit-data sync for date range: 2026-07-21 to 2026-07-21...
+[2026-07-22T05:03:26.721Z] 🔄 Starting visit-data sync for date range: 2026-07-21 to 2026-07-21
+[2026-07-22T05:03:26.722Z] 📅 Processing visit-data date: 2026-07-21
+[2026-07-22T05:03:26.723Z] 🔎 Discovering visit-data files under: project-vega-hr/SPEED/VISIT_DATA/2026/07/21/
+[2026-07-22T05:03:27.075Z] ⚠️ No CSV files found under project-vega-hr/SPEED/VISIT_DATA/2026/07/21/
+[2026-07-22T05:03:27.075Z] ⚠️ No visit data to insert; skipping DB sync.
+[2026-07-22T05:03:27.075Z] ✅ Successfully processed visit-data date: 2026-07-21
+[2026-07-22T05:03:27.076Z] ✅ Visit-data range sync completed. Processed: 1, Errors: 0
+[2026-07-22T05:05:22.551Z] 🚀 Server running on port 3001
+[2026-07-22T05:05:22.553Z] ⏰ Cron jobs initialized:
+[2026-07-22T05:05:22.553Z]    - S3 Sync: Daily at 7:00 AM
+[2026-07-22T05:05:22.553Z]    - Distributor Sync: Daily at 6:30 AM
+[2026-07-22T05:05:22.553Z]    - Visit Data Sync: Daily at 5:00 AM
+[2026-07-22T05:05:26.568Z] 🔄 Starting visit-data sync for date range: 2026-07-21 to 2026-07-21...
+[2026-07-22T05:05:26.568Z] 🔄 Starting visit-data sync for date range: 2026-07-21 to 2026-07-21...
+[2026-07-22T05:05:26.569Z] 🔄 Starting visit-data sync for date range: 2026-07-21 to 2026-07-21
+[2026-07-22T05:05:26.570Z] 📅 Processing visit-data date: 2026-07-21
+[2026-07-22T05:05:26.570Z] 🔎 Listing visit-data entries under: project-vega-hr/SPEED/VISIT_DATA/
+[2026-07-22T05:05:27.360Z] 🔎 Filtering visit-data files for date: 2026-07-21
+[2026-07-22T05:05:27.467Z] ⚠️ No CSV files found under project-vega-hr/SPEED/VISIT_DATA/2026/07/21/
+[2026-07-22T05:05:27.467Z] ⚠️ No visit data to insert; skipping DB sync.
+[2026-07-22T05:05:27.467Z] ✅ Successfully processed visit-data date: 2026-07-21
+[2026-07-22T05:05:27.468Z] ✅ Visit-data range sync completed. Processed: 1, Errors: 0
+[2026-07-22T05:08:42.111Z] 🚀 Server running on port 3001
+[2026-07-22T05:08:42.114Z] ⏰ Cron jobs initialized:
+[2026-07-22T05:08:42.114Z]    - S3 Sync: Daily at 7:00 AM
+[2026-07-22T05:08:42.114Z]    - Distributor Sync: Daily at 6:30 AM
+[2026-07-22T05:08:42.114Z]    - Visit Data Sync: Daily at 5:00 AM
+[2026-07-22T05:08:48.093Z] 🔄 Starting visit-data sync using the latest discovered CSV file...
+[2026-07-22T05:08:48.094Z] 🔎 Checking S3 prefix: project-vega-hr/SPEED/
+[2026-07-22T05:08:49.296Z] 📂 project-vega-hr/SPEED/ exists: false
+[2026-07-22T05:08:49.296Z] 🔎 Listing visit-data entries under: project-vega-hr/SPEED/VISIT_DATA/
+[2026-07-22T05:08:49.373Z] ⚠️ No CSV files found under project-vega-hr/SPEED/VISIT_DATA/
+[2026-07-22T05:08:49.373Z] ⚠️ No visit data to insert; skipping DB sync.
+[2026-07-22T05:11:15.719Z] 🚀 Server running on port 3001
+[2026-07-22T05:11:15.722Z] ⏰ Cron jobs initialized:
+[2026-07-22T05:11:15.722Z]    - S3 Sync: Daily at 7:00 AM
+[2026-07-22T05:11:15.722Z]    - Distributor Sync: Daily at 6:30 AM
+[2026-07-22T05:11:15.722Z]    - Visit Data Sync: Daily at 5:00 AM
+[2026-07-22T05:11:19.127Z] 🔄 Starting visit-data sync using the latest discovered CSV file...
+[2026-07-22T05:11:19.128Z] 🔎 Checking S3 bucket/prefix: project-vega-hr/SPEED/
+[2026-07-22T05:11:19.373Z] 📂 SPEED/ exists in bucket project-vega-hr: true
+[2026-07-22T05:11:19.373Z] 🔎 Listing visit-data entries under: SPEED/VISIT_DATA/
+[2026-07-22T05:11:19.430Z] 📄 Selected visit-data file: SPEED/VISIT_DATA/2026/07/22/M_DAILYTIMINGSUM_20260722043001.csv
+[2026-07-22T05:11:39.371Z] 📥 Saved raw visit-data file to upload/visit_data/1784697079575_M_DAILYTIMINGSUM_20260722043001.csv
+[2026-07-22T05:11:39.379Z] 🧭 Detected CSV delimiter '|' for visit_data
+[2026-07-22T05:11:39.481Z] ⚙️ Parsed 10000 visit-data rows (streaming CSV)
+[2026-07-22T05:11:39.541Z] ⚙️ Parsed 20000 visit-data rows (streaming CSV)
+[2026-07-22T05:11:39.589Z] ⚙️ Parsed 30000 visit-data rows (streaming CSV)
+[2026-07-22T05:11:39.642Z] ⚙️ Parsed 40000 visit-data rows (streaming CSV)
+[2026-07-22T05:11:39.687Z] ⚙️ Parsed 50000 visit-data rows (streaming CSV)
+[2026-07-22T05:11:39.748Z] ⚙️ Parsed 60000 visit-data rows (streaming CSV)
+[2026-07-22T05:11:39.794Z] ⚙️ Parsed 70000 visit-data rows (streaming CSV)
+[2026-07-22T05:11:39.845Z] ⚙️ Parsed 80000 visit-data rows (streaming CSV)
+[2026-07-22T05:11:39.891Z] ⚙️ Parsed 90000 visit-data rows (streaming CSV)
+[2026-07-22T05:11:39.937Z] ⚙️ Parsed 100000 visit-data rows (streaming CSV)
+[2026-07-22T05:11:39.980Z] ⚙️ Parsed 110000 visit-data rows (streaming CSV)
+[2026-07-22T05:11:40.030Z] ⚙️ Parsed 120000 visit-data rows (streaming CSV)
+[2026-07-22T05:11:40.081Z] ⚙️ Parsed 130000 visit-data rows (streaming CSV)
+[2026-07-22T05:11:40.124Z] ⚙️ Parsed 140000 visit-data rows (streaming CSV)
+[2026-07-22T05:11:40.168Z] ⚙️ Parsed 150000 visit-data rows (streaming CSV)
+[2026-07-22T05:11:40.210Z] ⚙️ Parsed 160000 visit-data rows (streaming CSV)
+[2026-07-22T05:11:40.256Z] ⚙️ Parsed 170000 visit-data rows (streaming CSV)
+[2026-07-22T05:11:40.304Z] ⚙️ Parsed 180000 visit-data rows (streaming CSV)
+[2026-07-22T05:11:40.346Z] ⚙️ Parsed 190000 visit-data rows (streaming CSV)
+[2026-07-22T05:11:40.361Z] ✅ Parsed 192122 visit-data rows from M_DAILYTIMINGSUM_20260722043001.csv
+[2026-07-22T05:11:40.862Z] ❌ Visit-data DB error: Table 'vegahrzaunl7avbl.integration_visit_data_temp' doesn't exist. Transaction rolled back.
+[2026-07-22T05:11:40.862Z] ❌ Error in visit-data sync: Table 'vegahrzaunl7avbl.integration_visit_data_temp' doesn't exist
+[2026-07-22T05:11:40.862Z] ❌ Visit-data sync error: Table 'vegahrzaunl7avbl.integration_visit_data_temp' doesn't exist
+[2026-07-22T05:15:02.714Z] 🔄 Starting visit-data sync using the latest discovered CSV file...
+[2026-07-22T05:15:02.714Z] 🔎 Checking S3 bucket/prefix: project-vega-hr/SPEED/
+[2026-07-22T05:15:03.006Z] 📂 SPEED/ exists in bucket project-vega-hr: true
+[2026-07-22T05:15:03.007Z] 🔎 Listing visit-data entries under: SPEED/VISIT_DATA/
+[2026-07-22T05:15:03.079Z] 📄 Selected visit-data file: SPEED/VISIT_DATA/2026/07/22/M_DAILYTIMINGSUM_20260722043001.csv
+[2026-07-22T05:15:20.031Z] 📥 Saved raw visit-data file to upload/visit_data/1784697303226_M_DAILYTIMINGSUM_20260722043001.csv
+[2026-07-22T05:15:20.038Z] 🧭 Detected CSV delimiter '|' for visit_data
+[2026-07-22T05:15:20.105Z] ⚙️ Parsed 10000 visit-data rows (streaming CSV)
+[2026-07-22T05:15:20.162Z] ⚙️ Parsed 20000 visit-data rows (streaming CSV)
+[2026-07-22T05:15:20.203Z] ⚙️ Parsed 30000 visit-data rows (streaming CSV)
+[2026-07-22T05:15:20.259Z] ⚙️ Parsed 40000 visit-data rows (streaming CSV)
+[2026-07-22T05:15:20.301Z] ⚙️ Parsed 50000 visit-data rows (streaming CSV)
+[2026-07-22T05:15:20.363Z] ⚙️ Parsed 60000 visit-data rows (streaming CSV)
+[2026-07-22T05:15:20.410Z] ⚙️ Parsed 70000 visit-data rows (streaming CSV)
+[2026-07-22T05:15:20.452Z] ⚙️ Parsed 80000 visit-data rows (streaming CSV)
+[2026-07-22T05:15:20.497Z] ⚙️ Parsed 90000 visit-data rows (streaming CSV)
+[2026-07-22T05:15:20.559Z] ⚙️ Parsed 100000 visit-data rows (streaming CSV)
+[2026-07-22T05:15:20.621Z] ⚙️ Parsed 110000 visit-data rows (streaming CSV)
+[2026-07-22T05:15:20.669Z] ⚙️ Parsed 120000 visit-data rows (streaming CSV)
+[2026-07-22T05:15:20.713Z] ⚙️ Parsed 130000 visit-data rows (streaming CSV)
+[2026-07-22T05:15:20.773Z] ⚙️ Parsed 140000 visit-data rows (streaming CSV)
+[2026-07-22T05:15:20.816Z] ⚙️ Parsed 150000 visit-data rows (streaming CSV)
+[2026-07-22T05:15:20.863Z] ⚙️ Parsed 160000 visit-data rows (streaming CSV)
+[2026-07-22T05:15:20.914Z] ⚙️ Parsed 170000 visit-data rows (streaming CSV)
+[2026-07-22T05:15:20.962Z] ⚙️ Parsed 180000 visit-data rows (streaming CSV)
+[2026-07-22T05:15:21.015Z] ⚙️ Parsed 190000 visit-data rows (streaming CSV)
+[2026-07-22T05:15:21.025Z] ✅ Parsed 192122 visit-data rows from M_DAILYTIMINGSUM_20260722043001.csv
+[2026-07-22T05:15:21.633Z] 🗑️ Cleared integration_visit_data_temp before inserting new visit data
+[2026-07-22T05:15:21.964Z] ❌ Visit-data DB error: Unknown column 'raw_line_no' in 'field list'. Transaction rolled back.
+[2026-07-22T05:15:21.964Z] ❌ Error in visit-data sync: Unknown column 'raw_line_no' in 'field list'
+[2026-07-22T05:15:21.964Z] ❌ Visit-data sync error: Unknown column 'raw_line_no' in 'field list'
+[2026-07-22T05:17:37.303Z] 🚀 Server running on port 3001
+[2026-07-22T05:17:37.306Z] ⏰ Cron jobs initialized:
+[2026-07-22T05:17:37.306Z]    - S3 Sync: Daily at 7:00 AM
+[2026-07-22T05:17:37.306Z]    - Distributor Sync: Daily at 6:30 AM
+[2026-07-22T05:17:37.306Z]    - Visit Data Sync: Daily at 5:00 AM
+[2026-07-22T05:17:42.990Z] 🔄 Starting visit-data sync using the latest discovered CSV file...
+[2026-07-22T05:17:42.990Z] 🔎 Checking S3 bucket/prefix: project-vega-hr/SPEED/
+[2026-07-22T05:17:43.244Z] 📂 SPEED/ exists in bucket project-vega-hr: true
+[2026-07-22T05:17:43.245Z] 🔎 Listing visit-data entries under: SPEED/VISIT_DATA/
+[2026-07-22T05:17:43.335Z] 📄 Selected visit-data file: SPEED/VISIT_DATA/2026/07/22/M_DAILYTIMINGSUM_20260722043001.csv
+[2026-07-22T05:17:56.570Z] 📥 Saved raw visit-data file to upload/visit_data/1784697463475_M_DAILYTIMINGSUM_20260722043001.csv
+[2026-07-22T05:17:56.582Z] 🧭 Detected CSV delimiter '|' for visit_data
+[2026-07-22T05:17:56.650Z] ⚙️ Parsed 10000 visit-data rows (streaming CSV)
+[2026-07-22T05:17:56.716Z] ⚙️ Parsed 20000 visit-data rows (streaming CSV)
+[2026-07-22T05:17:56.764Z] ⚙️ Parsed 30000 visit-data rows (streaming CSV)
+[2026-07-22T05:17:56.822Z] ⚙️ Parsed 40000 visit-data rows (streaming CSV)
+[2026-07-22T05:17:56.867Z] ⚙️ Parsed 50000 visit-data rows (streaming CSV)
+[2026-07-22T05:17:56.929Z] ⚙️ Parsed 60000 visit-data rows (streaming CSV)
+[2026-07-22T05:17:56.978Z] ⚙️ Parsed 70000 visit-data rows (streaming CSV)
+[2026-07-22T05:17:57.033Z] ⚙️ Parsed 80000 visit-data rows (streaming CSV)
+[2026-07-22T05:17:57.091Z] ⚙️ Parsed 90000 visit-data rows (streaming CSV)
+[2026-07-22T05:17:57.143Z] ⚙️ Parsed 100000 visit-data rows (streaming CSV)
+[2026-07-22T05:17:57.188Z] ⚙️ Parsed 110000 visit-data rows (streaming CSV)
+[2026-07-22T05:17:57.245Z] ⚙️ Parsed 120000 visit-data rows (streaming CSV)
+[2026-07-22T05:17:57.297Z] ⚙️ Parsed 130000 visit-data rows (streaming CSV)
+[2026-07-22T05:17:57.345Z] ⚙️ Parsed 140000 visit-data rows (streaming CSV)
+[2026-07-22T05:17:57.387Z] ⚙️ Parsed 150000 visit-data rows (streaming CSV)
+[2026-07-22T05:17:57.435Z] ⚙️ Parsed 160000 visit-data rows (streaming CSV)
+[2026-07-22T05:17:57.480Z] ⚙️ Parsed 170000 visit-data rows (streaming CSV)
+[2026-07-22T05:17:57.524Z] ⚙️ Parsed 180000 visit-data rows (streaming CSV)
+[2026-07-22T05:17:57.572Z] ⚙️ Parsed 190000 visit-data rows (streaming CSV)
+[2026-07-22T05:17:57.583Z] ✅ Parsed 192122 visit-data rows from M_DAILYTIMINGSUM_20260722043001.csv
+[2026-07-22T05:17:58.259Z] 🗑️ Cleared integration_visit_data_temp before inserting new visit data
+[2026-07-22T05:17:59.539Z] ❌ Visit-data DB error: Incorrect decimal value: '\\N' for column 'TIME_OUT_LONG' at row 54. Transaction rolled back.
+[2026-07-22T05:17:59.540Z] ❌ Error in visit-data sync: Incorrect decimal value: '\\N' for column 'TIME_OUT_LONG' at row 54
+[2026-07-22T05:17:59.541Z] ❌ Visit-data sync error: Incorrect decimal value: '\\N' for column 'TIME_OUT_LONG' at row 54
+[2026-07-22T05:22:42.887Z] 🔄 Starting visit-data sync using the latest discovered CSV file...
+[2026-07-22T05:22:42.887Z] 🔎 Checking S3 bucket/prefix: project-vega-hr/SPEED/
+[2026-07-22T05:22:43.172Z] 📂 SPEED/ exists in bucket project-vega-hr: true
+[2026-07-22T05:22:43.174Z] 🔎 Listing visit-data entries under: SPEED/VISIT_DATA/
+[2026-07-22T05:22:43.276Z] 📄 Selected visit-data file: SPEED/VISIT_DATA/2026/07/22/M_DAILYTIMINGSUM_20260722043001.csv
+[2026-07-22T05:22:59.743Z] 📥 Saved raw visit-data file to upload/visit_data/1784697763422_M_DAILYTIMINGSUM_20260722043001.csv
+[2026-07-22T05:22:59.753Z] 🧭 Detected CSV delimiter '|' for visit_data
+[2026-07-22T05:22:59.819Z] ⚙️ Parsed 10000 visit-data rows (streaming CSV)
+[2026-07-22T05:22:59.876Z] ⚙️ Parsed 20000 visit-data rows (streaming CSV)
+[2026-07-22T05:22:59.921Z] ⚙️ Parsed 30000 visit-data rows (streaming CSV)
+[2026-07-22T05:22:59.976Z] ⚙️ Parsed 40000 visit-data rows (streaming CSV)
+[2026-07-22T05:23:00.016Z] ⚙️ Parsed 50000 visit-data rows (streaming CSV)
+[2026-07-22T05:23:00.064Z] ⚙️ Parsed 60000 visit-data rows (streaming CSV)
+[2026-07-22T05:23:00.119Z] ⚙️ Parsed 70000 visit-data rows (streaming CSV)
+[2026-07-22T05:23:00.176Z] ⚙️ Parsed 80000 visit-data rows (streaming CSV)
+[2026-07-22T05:23:00.221Z] ⚙️ Parsed 90000 visit-data rows (streaming CSV)
+[2026-07-22T05:23:00.263Z] ⚙️ Parsed 100000 visit-data rows (streaming CSV)
+[2026-07-22T05:23:00.312Z] ⚙️ Parsed 110000 visit-data rows (streaming CSV)
+[2026-07-22T05:23:00.359Z] ⚙️ Parsed 120000 visit-data rows (streaming CSV)
+[2026-07-22T05:23:00.404Z] ⚙️ Parsed 130000 visit-data rows (streaming CSV)
+[2026-07-22T05:23:00.454Z] ⚙️ Parsed 140000 visit-data rows (streaming CSV)
+[2026-07-22T05:23:00.496Z] ⚙️ Parsed 150000 visit-data rows (streaming CSV)
+[2026-07-22T05:23:00.540Z] ⚙️ Parsed 160000 visit-data rows (streaming CSV)
+[2026-07-22T05:23:00.584Z] ⚙️ Parsed 170000 visit-data rows (streaming CSV)
+[2026-07-22T05:23:00.635Z] ⚙️ Parsed 180000 visit-data rows (streaming CSV)
+[2026-07-22T05:23:00.684Z] ⚙️ Parsed 190000 visit-data rows (streaming CSV)
+[2026-07-22T05:23:00.694Z] ✅ Parsed 192122 visit-data rows from M_DAILYTIMINGSUM_20260722043001.csv
+[2026-07-22T05:23:01.399Z] 🗑️ Cleared integration_visit_data_temp before inserting new visit data
+[2026-07-22T05:23:04.652Z] 🗃️ Inserted 5000/192122 rows into integration_visit_data_temp
+[2026-07-22T05:23:07.474Z] 🗃️ Inserted 10000/192122 rows into integration_visit_data_temp
+[2026-07-22T05:23:10.896Z] 🗃️ Inserted 15000/192122 rows into integration_visit_data_temp
+[2026-07-22T05:23:13.775Z] 🗃️ Inserted 20000/192122 rows into integration_visit_data_temp
+[2026-07-22T05:23:16.992Z] 🗃️ Inserted 25000/192122 rows into integration_visit_data_temp
+[2026-07-22T05:23:19.422Z] 🗃️ Inserted 30000/192122 rows into integration_visit_data_temp
+[2026-07-22T05:23:22.940Z] 🗃️ Inserted 35000/192122 rows into integration_visit_data_temp
+[2026-07-22T05:23:23.617Z] 🗃️ Inserted 40000/192122 rows into integration_visit_data_temp
+[2026-07-22T05:23:24.186Z] 🗃️ Inserted 45000/192122 rows into integration_visit_data_temp
+[2026-07-22T05:23:24.700Z] 🗃️ Inserted 50000/192122 rows into integration_visit_data_temp
+[2026-07-22T05:23:25.308Z] 🗃️ Inserted 55000/192122 rows into integration_visit_data_temp
+[2026-07-22T05:23:25.848Z] 🗃️ Inserted 60000/192122 rows into integration_visit_data_temp
+[2026-07-22T05:23:26.347Z] 🗃️ Inserted 65000/192122 rows into integration_visit_data_temp
+[2026-07-22T05:23:26.941Z] 🗃️ Inserted 70000/192122 rows into integration_visit_data_temp
+[2026-07-22T05:23:27.460Z] 🗃️ Inserted 75000/192122 rows into integration_visit_data_temp
+[2026-07-22T05:23:27.962Z] 🗃️ Inserted 80000/192122 rows into integration_visit_data_temp
+[2026-07-22T05:23:28.420Z] 🗃️ Inserted 85000/192122 rows into integration_visit_data_temp
+[2026-07-22T05:23:28.817Z] 🗃️ Inserted 90000/192122 rows into integration_visit_data_temp
+[2026-07-22T05:23:29.199Z] 🗃️ Inserted 95000/192122 rows into integration_visit_data_temp
+[2026-07-22T05:23:29.564Z] 🗃️ Inserted 100000/192122 rows into integration_visit_data_temp
+[2026-07-22T05:23:30.042Z] 🗃️ Inserted 105000/192122 rows into integration_visit_data_temp
+[2026-07-22T05:23:30.537Z] 🗃️ Inserted 110000/192122 rows into integration_visit_data_temp
+[2026-07-22T05:23:31.056Z] 🗃️ Inserted 115000/192122 rows into integration_visit_data_temp
+[2026-07-22T05:23:31.475Z] 🗃️ Inserted 120000/192122 rows into integration_visit_data_temp
+[2026-07-22T05:23:31.902Z] 🗃️ Inserted 125000/192122 rows into integration_visit_data_temp
+[2026-07-22T05:23:32.330Z] 🗃️ Inserted 130000/192122 rows into integration_visit_data_temp
+[2026-07-22T05:23:32.801Z] 🗃️ Inserted 135000/192122 rows into integration_visit_data_temp
+[2026-07-22T05:23:33.278Z] 🗃️ Inserted 140000/192122 rows into integration_visit_data_temp
+[2026-07-22T05:23:33.749Z] 🗃️ Inserted 145000/192122 rows into integration_visit_data_temp
+[2026-07-22T05:23:34.202Z] 🗃️ Inserted 150000/192122 rows into integration_visit_data_temp
+[2026-07-22T05:23:34.672Z] 🗃️ Inserted 155000/192122 rows into integration_visit_data_temp
+[2026-07-22T05:23:35.151Z] 🗃️ Inserted 160000/192122 rows into integration_visit_data_temp
+[2026-07-22T05:23:35.544Z] 🗃️ Inserted 165000/192122 rows into integration_visit_data_temp
+[2026-07-22T05:23:36.023Z] 🗃️ Inserted 170000/192122 rows into integration_visit_data_temp
+[2026-07-22T05:23:36.412Z] 🗃️ Inserted 175000/192122 rows into integration_visit_data_temp
+[2026-07-22T05:23:36.857Z] 🗃️ Inserted 180000/192122 rows into integration_visit_data_temp
+[2026-07-22T05:23:37.318Z] 🗃️ Inserted 185000/192122 rows into integration_visit_data_temp
+[2026-07-22T05:23:37.705Z] 🗃️ Inserted 190000/192122 rows into integration_visit_data_temp
+[2026-07-22T05:23:37.953Z] 🗃️ Inserted 192122/192122 rows into integration_visit_data_temp
+[2026-07-22T05:23:38.055Z] 📊 Visit-data stored procedure result: [[{"state":1,"message":"Success"}],{"fieldCount":0,"affectedRows":0,"insertId":0,"info":"","serverStatus":16386,"warningStatus":0,"changedRows":0}]
+[2026-07-22T05:23:38.098Z] ✅ Visit-data transaction committed successfully
+[2026-07-27T02:40:22.436Z] 🚀 Server running on port 3001
+[2026-07-27T02:40:22.444Z] ⏰ Cron jobs initialized:
+[2026-07-27T02:40:22.444Z]    - S3 Sync: Daily at 7:00 AM
+[2026-07-27T02:40:22.445Z]    - Distributor Sync: Daily at 6:30 AM
+[2026-07-27T02:40:22.445Z]    - Visit Data Sync: Daily at 5:00 AM
+[2026-07-27T02:40:54.100Z] 🔄 Starting distributor data sync for date range: 2026-07-22 to 2026-07-27
+[2026-07-27T02:40:54.100Z] 📅 Processing date: 2026-07-22
+[2026-07-27T02:40:58.227Z] ✅ Final combined CSV saved at upload/DBR2026-07-22T00-00-00-000Z.csv
+[2026-07-27T02:40:58.863Z] 🗑️ Cleared temporary table before processing new data
+[2026-07-27T02:40:59.033Z] ✅ Inserted 126 distributor records into integration_outlet_s3_temp
+[2026-07-27T02:40:59.417Z] ✅ Transaction committed successfully
+[2026-07-27T02:40:59.418Z] ✅ Distributor data sync completed successfully
+[2026-07-27T02:40:59.418Z] ✅ Successfully processed date: 2026-07-22
+[2026-07-27T02:40:59.419Z] 📅 Processing date: 2026-07-23
+[2026-07-27T02:41:02.464Z] ✅ Final combined CSV saved at upload/DBR2026-07-23T00-00-00-000Z.csv
+[2026-07-27T02:41:02.976Z] 🗑️ Cleared temporary table before processing new data
+[2026-07-27T02:41:03.102Z] ✅ Inserted 191 distributor records into integration_outlet_s3_temp
+[2026-07-27T02:41:03.299Z] ✅ Transaction committed successfully
+[2026-07-27T02:41:03.300Z] ✅ Distributor data sync completed successfully
+[2026-07-27T02:41:03.300Z] ✅ Successfully processed date: 2026-07-23
+[2026-07-27T02:41:03.300Z] 📅 Processing date: 2026-07-24
+[2026-07-27T02:41:07.912Z] ✅ Final combined CSV saved at upload/DBR2026-07-24T00-00-00-000Z.csv
+[2026-07-27T02:41:08.410Z] 🗑️ Cleared temporary table before processing new data
+[2026-07-27T02:41:08.645Z] ✅ Inserted 556 distributor records into integration_outlet_s3_temp
+[2026-07-27T02:41:08.867Z] ✅ Transaction committed successfully
+[2026-07-27T02:41:08.867Z] ✅ Distributor data sync completed successfully
+[2026-07-27T02:41:08.867Z] ✅ Successfully processed date: 2026-07-24
+[2026-07-27T02:41:08.867Z] 📅 Processing date: 2026-07-25
+[2026-07-27T02:41:17.192Z] ✅ Final combined CSV saved at upload/DBR2026-07-25T00-00-00-000Z.csv
+[2026-07-27T02:41:17.682Z] 🗑️ Cleared temporary table before processing new data
+[2026-07-27T02:41:18.083Z] ✅ Inserted 1387 distributor records into integration_outlet_s3_temp
+[2026-07-27T02:41:18.302Z] ✅ Transaction committed successfully
+[2026-07-27T02:41:18.303Z] ✅ Distributor data sync completed successfully
+[2026-07-27T02:41:18.303Z] ✅ Successfully processed date: 2026-07-25
+[2026-07-27T02:41:18.303Z] 📅 Processing date: 2026-07-26
+[2026-07-27T02:41:20.800Z] ✅ Final combined CSV saved at upload/DBR2026-07-26T00-00-00-000Z.csv
+[2026-07-27T02:41:21.325Z] 🗑️ Cleared temporary table before processing new data
+[2026-07-27T02:41:21.413Z] ✅ Inserted 24 distributor records into integration_outlet_s3_temp
+[2026-07-27T02:41:21.598Z] ✅ Transaction committed successfully
+[2026-07-27T02:41:21.598Z] ✅ Distributor data sync completed successfully
+[2026-07-27T02:41:21.598Z] ✅ Successfully processed date: 2026-07-26
+[2026-07-27T02:41:21.599Z] 📅 Processing date: 2026-07-27
+[2026-07-27T02:41:23.685Z] ❌ Error fetching distributor data: Request failed with status code 400
+[2026-07-27T02:41:23.685Z] ❌ Error in distributor data sync: Request failed with status code 400
+[2026-07-27T02:41:23.686Z] ❌ Error processing date 2026-07-27: Request failed with status code 400
+[2026-07-27T02:41:23.686Z] ✅ Date range sync completed. Processed: 5, Errors: 1
+[2026-07-27T02:41:27.093Z] 🔄 Starting S3 data sync for date range: 2026-07-22 to 2026-07-27...
+[2026-07-27T02:41:27.093Z] 🔄 Starting S3 data sync for date range: 2026-07-22 to 2026-07-27...
+[2026-07-27T02:41:27.094Z] 🔄 Starting S3 data sync for date range: 2026-07-22 to 2026-07-27
+[2026-07-27T02:41:27.094Z] 📅 Processing date: 2026-07-22
+[2026-07-27T02:41:36.733Z] 📥 Saved speed file to upload/speed_CUST_MASTER_22_07_2026.csv
+[2026-07-27T02:41:36.739Z] 🧭 Detected CSV delimiter '|' for speed
+[2026-07-27T02:41:37.149Z] ⚙️ Processed 10000 rows for speed (streaming CSV)
+[2026-07-27T02:41:37.415Z] ⚙️ Processed 20000 rows for speed (streaming CSV)
+[2026-07-27T02:41:37.733Z] ⚙️ Processed 30000 rows for speed (streaming CSV)
+[2026-07-27T02:41:38.069Z] ⚙️ Processed 40000 rows for speed (streaming CSV)
+[2026-07-27T02:41:38.331Z] ⚙️ Processed 50000 rows for speed (streaming CSV)
+[2026-07-27T02:41:38.621Z] ⚙️ Processed 60000 rows for speed (streaming CSV)
+[2026-07-27T02:41:38.900Z] ⚙️ Processed 70000 rows for speed (streaming CSV)
+[2026-07-27T02:41:39.240Z] ⚙️ Processed 80000 rows for speed (streaming CSV)
+[2026-07-27T02:41:39.548Z] ⚙️ Processed 90000 rows for speed (streaming CSV)
+[2026-07-27T02:41:39.834Z] ⚙️ Processed 100000 rows for speed (streaming CSV)
+[2026-07-27T02:41:40.139Z] ⚙️ Processed 110000 rows for speed (streaming CSV)
+[2026-07-27T02:41:40.415Z] ⚙️ Processed 120000 rows for speed (streaming CSV)
+[2026-07-27T02:41:40.448Z] ✅ Processed 121137 rows from speed
+[2026-07-27T02:41:41.060Z] 🗑️ Cleared temporary table before processing new data
+[2026-07-27T02:41:41.859Z] 🗃️ Inserted 5000/121137 rows into integration_outlet_s3_temp
+[2026-07-27T02:41:42.161Z] 🗃️ Inserted 10000/121137 rows into integration_outlet_s3_temp
+[2026-07-27T02:41:42.495Z] 🗃️ Inserted 15000/121137 rows into integration_outlet_s3_temp
+[2026-07-27T02:41:42.836Z] 🗃️ Inserted 20000/121137 rows into integration_outlet_s3_temp
+[2026-07-27T02:41:43.150Z] 🗃️ Inserted 25000/121137 rows into integration_outlet_s3_temp
+[2026-07-27T02:41:43.454Z] 🗃️ Inserted 30000/121137 rows into integration_outlet_s3_temp
+[2026-07-27T02:41:43.771Z] 🗃️ Inserted 35000/121137 rows into integration_outlet_s3_temp
+[2026-07-27T02:41:44.137Z] 🗃️ Inserted 40000/121137 rows into integration_outlet_s3_temp
+[2026-07-27T02:41:44.466Z] 🗃️ Inserted 45000/121137 rows into integration_outlet_s3_temp
+[2026-07-27T02:41:44.804Z] 🗃️ Inserted 50000/121137 rows into integration_outlet_s3_temp
+[2026-07-27T02:41:45.137Z] 🗃️ Inserted 55000/121137 rows into integration_outlet_s3_temp
+[2026-07-27T02:41:45.454Z] 🗃️ Inserted 60000/121137 rows into integration_outlet_s3_temp
+[2026-07-27T02:41:45.760Z] 🗃️ Inserted 65000/121137 rows into integration_outlet_s3_temp
+[2026-07-27T02:41:46.077Z] 🗃️ Inserted 70000/121137 rows into integration_outlet_s3_temp
+[2026-07-27T02:41:46.410Z] 🗃️ Inserted 75000/121137 rows into integration_outlet_s3_temp
+[2026-07-27T02:41:46.726Z] 🗃️ Inserted 80000/121137 rows into integration_outlet_s3_temp
+[2026-07-27T02:41:47.028Z] 🗃️ Inserted 85000/121137 rows into integration_outlet_s3_temp
+[2026-07-27T02:41:47.346Z] 🗃️ Inserted 90000/121137 rows into integration_outlet_s3_temp
+[2026-07-27T02:41:47.723Z] 🗃️ Inserted 95000/121137 rows into integration_outlet_s3_temp
+[2026-07-27T02:41:48.022Z] 🗃️ Inserted 100000/121137 rows into integration_outlet_s3_temp
+[2026-07-27T02:41:48.334Z] 🗃️ Inserted 105000/121137 rows into integration_outlet_s3_temp
+[2026-07-27T02:41:48.649Z] 🗃️ Inserted 110000/121137 rows into integration_outlet_s3_temp
+[2026-07-27T02:41:48.969Z] 🗃️ Inserted 115000/121137 rows into integration_outlet_s3_temp
+[2026-07-27T02:41:49.281Z] 🗃️ Inserted 120000/121137 rows into integration_outlet_s3_temp
+[2026-07-27T02:41:49.375Z] 🗃️ Inserted 121137/121137 rows into integration_outlet_s3_temp
+[2026-07-27T02:42:56.584Z] ✅ Transaction committed successfully
+[2026-07-27T02:42:56.585Z] ✅ Successfully processed date: 2026-07-22
+[2026-07-27T02:42:56.586Z] 📅 Processing date: 2026-07-23
+[2026-07-27T02:43:10.919Z] 📥 Saved speed file to upload/speed_CUST_MASTER_23_07_2026.csv
+[2026-07-27T02:43:10.921Z] 🧭 Detected CSV delimiter '|' for speed
+[2026-07-27T02:43:11.266Z] ⚙️ Processed 10000 rows for speed (streaming CSV)
+[2026-07-27T02:43:11.554Z] ⚙️ Processed 20000 rows for speed (streaming CSV)
+[2026-07-27T02:43:11.839Z] ⚙️ Processed 30000 rows for speed (streaming CSV)
+[2026-07-27T02:43:12.116Z] ⚙️ Processed 40000 rows for speed (streaming CSV)
+[2026-07-27T02:43:12.377Z] ⚙️ Processed 50000 rows for speed (streaming CSV)
+[2026-07-27T02:43:12.665Z] ⚙️ Processed 60000 rows for speed (streaming CSV)
+[2026-07-27T02:43:12.935Z] ⚙️ Processed 70000 rows for speed (streaming CSV)
+[2026-07-27T02:43:13.218Z] ⚙️ Processed 80000 rows for speed (streaming CSV)
+[2026-07-27T02:43:13.485Z] ⚙️ Processed 90000 rows for speed (streaming CSV)
+[2026-07-27T02:43:13.746Z] ⚙️ Processed 100000 rows for speed (streaming CSV)
+[2026-07-27T02:43:14.030Z] ⚙️ Processed 110000 rows for speed (streaming CSV)
+[2026-07-27T02:43:14.288Z] ⚙️ Processed 120000 rows for speed (streaming CSV)
+[2026-07-27T02:43:14.552Z] ⚙️ Processed 130000 rows for speed (streaming CSV)
+[2026-07-27T02:43:14.810Z] ⚙️ Processed 140000 rows for speed (streaming CSV)
+[2026-07-27T02:43:15.082Z] ⚙️ Processed 150000 rows for speed (streaming CSV)
+[2026-07-27T02:43:15.101Z] ✅ Processed 150763 rows from speed
+[2026-07-27T02:43:15.687Z] 🗑️ Cleared temporary table before processing new data
+[2026-07-27T02:43:16.539Z] 🗃️ Inserted 5000/150763 rows into integration_outlet_s3_temp
+[2026-07-27T02:43:17.338Z] 🗃️ Inserted 10000/150763 rows into integration_outlet_s3_temp
+[2026-07-27T02:43:17.956Z] 🗃️ Inserted 15000/150763 rows into integration_outlet_s3_temp
+[2026-07-27T02:43:18.330Z] 🗃️ Inserted 20000/150763 rows into integration_outlet_s3_temp
+[2026-07-27T02:43:18.694Z] 🗃️ Inserted 25000/150763 rows into integration_outlet_s3_temp
+[2026-07-27T02:43:19.037Z] 🗃️ Inserted 30000/150763 rows into integration_outlet_s3_temp
+[2026-07-27T02:43:19.376Z] 🗃️ Inserted 35000/150763 rows into integration_outlet_s3_temp
+[2026-07-27T02:43:19.727Z] 🗃️ Inserted 40000/150763 rows into integration_outlet_s3_temp
+[2026-07-27T02:43:20.079Z] 🗃️ Inserted 45000/150763 rows into integration_outlet_s3_temp
+[2026-07-27T02:43:20.418Z] 🗃️ Inserted 50000/150763 rows into integration_outlet_s3_temp
+[2026-07-27T02:43:20.743Z] 🗃️ Inserted 55000/150763 rows into integration_outlet_s3_temp
+[2026-07-27T02:43:21.130Z] 🗃️ Inserted 60000/150763 rows into integration_outlet_s3_temp
+[2026-07-27T02:43:21.482Z] 🗃️ Inserted 65000/150763 rows into integration_outlet_s3_temp
+[2026-07-27T02:43:21.816Z] 🗃️ Inserted 70000/150763 rows into integration_outlet_s3_temp
+[2026-07-27T02:43:22.171Z] 🗃️ Inserted 75000/150763 rows into integration_outlet_s3_temp
+[2026-07-27T02:43:22.523Z] 🗃️ Inserted 80000/150763 rows into integration_outlet_s3_temp
+[2026-07-27T02:43:22.860Z] 🗃️ Inserted 85000/150763 rows into integration_outlet_s3_temp
+[2026-07-27T02:43:23.570Z] 🗃️ Inserted 90000/150763 rows into integration_outlet_s3_temp
+[2026-07-27T02:43:24.290Z] 🗃️ Inserted 95000/150763 rows into integration_outlet_s3_temp
+[2026-07-27T02:43:24.654Z] 🗃️ Inserted 100000/150763 rows into integration_outlet_s3_temp
+[2026-07-27T02:43:25.004Z] 🗃️ Inserted 105000/150763 rows into integration_outlet_s3_temp
+[2026-07-27T02:43:25.373Z] 🗃️ Inserted 110000/150763 rows into integration_outlet_s3_temp
+[2026-07-27T02:43:25.895Z] 🗃️ Inserted 115000/150763 rows into integration_outlet_s3_temp
+[2026-07-27T02:43:26.294Z] 🗃️ Inserted 120000/150763 rows into integration_outlet_s3_temp
+[2026-07-27T02:43:27.054Z] 🗃️ Inserted 125000/150763 rows into integration_outlet_s3_temp
+[2026-07-27T02:43:27.478Z] 🗃️ Inserted 130000/150763 rows into integration_outlet_s3_temp
+[2026-07-27T02:43:27.821Z] 🗃️ Inserted 135000/150763 rows into integration_outlet_s3_temp
+[2026-07-27T02:43:28.214Z] 🗃️ Inserted 140000/150763 rows into integration_outlet_s3_temp
+[2026-07-27T02:43:28.596Z] 🗃️ Inserted 145000/150763 rows into integration_outlet_s3_temp
+[2026-07-27T02:43:29.099Z] 🗃️ Inserted 150000/150763 rows into integration_outlet_s3_temp
+[2026-07-27T02:43:29.219Z] 🗃️ Inserted 150763/150763 rows into integration_outlet_s3_temp
+[2026-07-27T02:44:20.690Z] ✅ Transaction committed successfully
+[2026-07-27T02:44:20.692Z] ✅ Successfully processed date: 2026-07-23
+[2026-07-27T02:44:20.693Z] 📅 Processing date: 2026-07-24
+[2026-07-27T02:44:29.951Z] 📥 Saved speed file to upload/speed_CUST_MASTER_24_07_2026.csv
+[2026-07-27T02:44:29.953Z] 🧭 Detected CSV delimiter '|' for speed
+[2026-07-27T02:44:30.240Z] ⚙️ Processed 10000 rows for speed (streaming CSV)
+[2026-07-27T02:44:30.505Z] ⚙️ Processed 20000 rows for speed (streaming CSV)
+[2026-07-27T02:44:30.759Z] ⚙️ Processed 30000 rows for speed (streaming CSV)
+[2026-07-27T02:44:31.029Z] ⚙️ Processed 40000 rows for speed (streaming CSV)
+[2026-07-27T02:44:31.286Z] ⚙️ Processed 50000 rows for speed (streaming CSV)
+[2026-07-27T02:44:31.566Z] ⚙️ Processed 60000 rows for speed (streaming CSV)
+[2026-07-27T02:44:31.822Z] ⚙️ Processed 70000 rows for speed (streaming CSV)
+[2026-07-27T02:44:32.094Z] ⚙️ Processed 80000 rows for speed (streaming CSV)
+[2026-07-27T02:44:32.344Z] ⚙️ Processed 90000 rows for speed (streaming CSV)
+[2026-07-27T02:44:32.599Z] ⚙️ Processed 100000 rows for speed (streaming CSV)
+[2026-07-27T02:44:32.871Z] ⚙️ Processed 110000 rows for speed (streaming CSV)
+[2026-07-27T02:44:33.136Z] ⚙️ Processed 120000 rows for speed (streaming CSV)
+[2026-07-27T02:44:33.397Z] ⚙️ Processed 130000 rows for speed (streaming CSV)
+[2026-07-27T02:44:33.489Z] ✅ Processed 133149 rows from speed
+[2026-07-27T02:44:34.083Z] 🗑️ Cleared temporary table before processing new data
+[2026-07-27T02:44:35.056Z] 🗃️ Inserted 5000/133149 rows into integration_outlet_s3_temp
+[2026-07-27T02:44:35.480Z] 🗃️ Inserted 10000/133149 rows into integration_outlet_s3_temp
+[2026-07-27T02:44:35.902Z] 🗃️ Inserted 15000/133149 rows into integration_outlet_s3_temp
+[2026-07-27T02:44:36.325Z] 🗃️ Inserted 20000/133149 rows into integration_outlet_s3_temp
+[2026-07-27T02:44:36.669Z] 🗃️ Inserted 25000/133149 rows into integration_outlet_s3_temp
+[2026-07-27T02:44:36.989Z] 🗃️ Inserted 30000/133149 rows into integration_outlet_s3_temp
+[2026-07-27T02:44:37.317Z] 🗃️ Inserted 35000/133149 rows into integration_outlet_s3_temp
+[2026-07-27T02:44:37.642Z] 🗃️ Inserted 40000/133149 rows into integration_outlet_s3_temp
+[2026-07-27T02:44:37.969Z] 🗃️ Inserted 45000/133149 rows into integration_outlet_s3_temp
+[2026-07-27T02:44:38.308Z] 🗃️ Inserted 50000/133149 rows into integration_outlet_s3_temp
+[2026-07-27T02:44:38.652Z] 🗃️ Inserted 55000/133149 rows into integration_outlet_s3_temp
+[2026-07-27T02:44:38.969Z] 🗃️ Inserted 60000/133149 rows into integration_outlet_s3_temp
+[2026-07-27T02:44:39.289Z] 🗃️ Inserted 65000/133149 rows into integration_outlet_s3_temp
+[2026-07-27T02:44:39.765Z] 🗃️ Inserted 70000/133149 rows into integration_outlet_s3_temp
+[2026-07-27T02:44:40.174Z] 🗃️ Inserted 75000/133149 rows into integration_outlet_s3_temp
+[2026-07-27T02:44:40.539Z] 🗃️ Inserted 80000/133149 rows into integration_outlet_s3_temp
+[2026-07-27T02:44:40.891Z] 🗃️ Inserted 85000/133149 rows into integration_outlet_s3_temp
+[2026-07-27T02:44:41.224Z] 🗃️ Inserted 90000/133149 rows into integration_outlet_s3_temp
+[2026-07-27T02:44:41.535Z] 🗃️ Inserted 95000/133149 rows into integration_outlet_s3_temp
+[2026-07-27T02:44:41.851Z] 🗃️ Inserted 100000/133149 rows into integration_outlet_s3_temp
+[2026-07-27T02:44:42.202Z] 🗃️ Inserted 105000/133149 rows into integration_outlet_s3_temp
+[2026-07-27T02:44:42.514Z] 🗃️ Inserted 110000/133149 rows into integration_outlet_s3_temp
+[2026-07-27T02:44:42.842Z] 🗃️ Inserted 115000/133149 rows into integration_outlet_s3_temp
+[2026-07-27T02:44:43.152Z] 🗃️ Inserted 120000/133149 rows into integration_outlet_s3_temp
+[2026-07-27T02:44:43.462Z] 🗃️ Inserted 125000/133149 rows into integration_outlet_s3_temp
+[2026-07-27T02:44:43.787Z] 🗃️ Inserted 130000/133149 rows into integration_outlet_s3_temp
+[2026-07-27T02:44:44.006Z] 🗃️ Inserted 133149/133149 rows into integration_outlet_s3_temp
+[2026-07-27T02:45:31.080Z] ✅ Transaction committed successfully
+[2026-07-27T02:45:31.081Z] ✅ Successfully processed date: 2026-07-24
+[2026-07-27T02:45:31.082Z] 📅 Processing date: 2026-07-25
+[2026-07-27T02:45:38.605Z] 📥 Saved speed file to upload/speed_CUST_MASTER_25_07_2026.csv
+[2026-07-27T02:45:38.607Z] 🧭 Detected CSV delimiter '|' for speed
+[2026-07-27T02:45:38.901Z] ⚙️ Processed 10000 rows for speed (streaming CSV)
+[2026-07-27T02:45:39.185Z] ⚙️ Processed 20000 rows for speed (streaming CSV)
+[2026-07-27T02:45:39.452Z] ⚙️ Processed 30000 rows for speed (streaming CSV)
+[2026-07-27T02:45:39.729Z] ⚙️ Processed 40000 rows for speed (streaming CSV)
+[2026-07-27T02:45:40.026Z] ⚙️ Processed 50000 rows for speed (streaming CSV)
+[2026-07-27T02:45:40.310Z] ⚙️ Processed 60000 rows for speed (streaming CSV)
+[2026-07-27T02:45:40.584Z] ⚙️ Processed 70000 rows for speed (streaming CSV)
+[2026-07-27T02:45:40.836Z] ⚙️ Processed 80000 rows for speed (streaming CSV)
+[2026-07-27T02:45:41.104Z] ⚙️ Processed 90000 rows for speed (streaming CSV)
+[2026-07-27T02:45:41.361Z] ⚙️ Processed 100000 rows for speed (streaming CSV)
+[2026-07-27T02:45:41.617Z] ⚙️ Processed 110000 rows for speed (streaming CSV)
+[2026-07-27T02:45:41.889Z] ⚙️ Processed 120000 rows for speed (streaming CSV)
+[2026-07-27T02:45:41.958Z] ✅ Processed 122640 rows from speed
+[2026-07-27T02:45:45.250Z] 🗑️ Cleared temporary table before processing new data
+[2026-07-27T02:45:46.634Z] 🗃️ Inserted 5000/122640 rows into integration_outlet_s3_temp
+[2026-07-27T02:45:47.181Z] 🗃️ Inserted 10000/122640 rows into integration_outlet_s3_temp
+[2026-07-27T02:45:47.581Z] 🗃️ Inserted 15000/122640 rows into integration_outlet_s3_temp
+[2026-07-27T02:45:47.940Z] 🗃️ Inserted 20000/122640 rows into integration_outlet_s3_temp
+[2026-07-27T02:45:48.296Z] 🗃️ Inserted 25000/122640 rows into integration_outlet_s3_temp
+[2026-07-27T02:45:48.616Z] 🗃️ Inserted 30000/122640 rows into integration_outlet_s3_temp
+[2026-07-27T02:45:48.941Z] 🗃️ Inserted 35000/122640 rows into integration_outlet_s3_temp
+[2026-07-27T02:45:49.254Z] 🗃️ Inserted 40000/122640 rows into integration_outlet_s3_temp
+[2026-07-27T02:45:49.581Z] 🗃️ Inserted 45000/122640 rows into integration_outlet_s3_temp
+[2026-07-27T02:45:49.910Z] 🗃️ Inserted 50000/122640 rows into integration_outlet_s3_temp
+[2026-07-27T02:45:50.232Z] 🗃️ Inserted 55000/122640 rows into integration_outlet_s3_temp
+[2026-07-27T02:45:50.563Z] 🗃️ Inserted 60000/122640 rows into integration_outlet_s3_temp
+[2026-07-27T02:45:50.933Z] 🗃️ Inserted 65000/122640 rows into integration_outlet_s3_temp
+[2026-07-27T02:45:51.254Z] 🗃️ Inserted 70000/122640 rows into integration_outlet_s3_temp
+[2026-07-27T02:45:51.556Z] 🗃️ Inserted 75000/122640 rows into integration_outlet_s3_temp
+[2026-07-27T02:45:51.869Z] 🗃️ Inserted 80000/122640 rows into integration_outlet_s3_temp
+[2026-07-27T02:45:52.488Z] 🗃️ Inserted 85000/122640 rows into integration_outlet_s3_temp
+[2026-07-27T02:45:52.836Z] 🗃️ Inserted 90000/122640 rows into integration_outlet_s3_temp
+[2026-07-27T02:45:54.264Z] 🗃️ Inserted 95000/122640 rows into integration_outlet_s3_temp
+[2026-07-27T02:45:55.050Z] 🗃️ Inserted 100000/122640 rows into integration_outlet_s3_temp
+[2026-07-27T02:45:55.542Z] 🗃️ Inserted 105000/122640 rows into integration_outlet_s3_temp
+[2026-07-27T02:45:55.853Z] 🗃️ Inserted 110000/122640 rows into integration_outlet_s3_temp
+[2026-07-27T02:45:56.165Z] 🗃️ Inserted 115000/122640 rows into integration_outlet_s3_temp
+[2026-07-27T02:45:56.566Z] 🗃️ Inserted 120000/122640 rows into integration_outlet_s3_temp
+[2026-07-27T02:45:56.746Z] 🗃️ Inserted 122640/122640 rows into integration_outlet_s3_temp
+[2026-07-27T02:46:40.740Z] ✅ Transaction committed successfully
+[2026-07-27T02:46:40.741Z] ✅ Successfully processed date: 2026-07-25
+[2026-07-27T02:46:40.742Z] 📅 Processing date: 2026-07-26
+[2026-07-27T02:46:51.678Z] 📥 Saved speed file to upload/speed_CUST_MASTER_26_07_2026.csv
+[2026-07-27T02:46:51.680Z] 🧭 Detected CSV delimiter '|' for speed
+[2026-07-27T02:46:51.971Z] ⚙️ Processed 10000 rows for speed (streaming CSV)
+[2026-07-27T02:46:52.222Z] ⚙️ Processed 20000 rows for speed (streaming CSV)
+[2026-07-27T02:46:52.480Z] ⚙️ Processed 30000 rows for speed (streaming CSV)
+[2026-07-27T02:46:52.740Z] ⚙️ Processed 40000 rows for speed (streaming CSV)
+[2026-07-27T02:46:52.993Z] ⚙️ Processed 50000 rows for speed (streaming CSV)
+[2026-07-27T02:46:53.242Z] ⚙️ Processed 60000 rows for speed (streaming CSV)
+[2026-07-27T02:46:53.509Z] ⚙️ Processed 70000 rows for speed (streaming CSV)
+[2026-07-27T02:46:53.768Z] ⚙️ Processed 80000 rows for speed (streaming CSV)
+[2026-07-27T02:46:54.030Z] ⚙️ Processed 90000 rows for speed (streaming CSV)
+[2026-07-27T02:46:54.281Z] ⚙️ Processed 100000 rows for speed (streaming CSV)
+[2026-07-27T02:46:54.554Z] ⚙️ Processed 110000 rows for speed (streaming CSV)
+[2026-07-27T02:46:54.809Z] ⚙️ Processed 120000 rows for speed (streaming CSV)
+[2026-07-27T02:46:54.881Z] ✅ Processed 122748 rows from speed
+[2026-07-27T02:46:55.480Z] 🗑️ Cleared temporary table before processing new data
+[2026-07-27T02:46:56.474Z] 🗃️ Inserted 5000/122748 rows into integration_outlet_s3_temp
+[2026-07-27T02:46:56.934Z] 🗃️ Inserted 10000/122748 rows into integration_outlet_s3_temp
+[2026-07-27T02:46:57.313Z] 🗃️ Inserted 15000/122748 rows into integration_outlet_s3_temp
+[2026-07-27T02:46:57.690Z] 🗃️ Inserted 20000/122748 rows into integration_outlet_s3_temp
+[2026-07-27T02:46:58.064Z] 🗃️ Inserted 25000/122748 rows into integration_outlet_s3_temp
+[2026-07-27T02:46:58.410Z] 🗃️ Inserted 30000/122748 rows into integration_outlet_s3_temp
+[2026-07-27T02:46:58.768Z] 🗃️ Inserted 35000/122748 rows into integration_outlet_s3_temp
+[2026-07-27T02:46:59.132Z] 🗃️ Inserted 40000/122748 rows into integration_outlet_s3_temp
+[2026-07-27T02:46:59.482Z] 🗃️ Inserted 45000/122748 rows into integration_outlet_s3_temp
+[2026-07-27T02:46:59.855Z] 🗃️ Inserted 50000/122748 rows into integration_outlet_s3_temp
+[2026-07-27T02:47:00.207Z] 🗃️ Inserted 55000/122748 rows into integration_outlet_s3_temp
+[2026-07-27T02:47:00.565Z] 🗃️ Inserted 60000/122748 rows into integration_outlet_s3_temp
+[2026-07-27T02:47:00.910Z] 🗃️ Inserted 65000/122748 rows into integration_outlet_s3_temp
+[2026-07-27T02:47:01.252Z] 🗃️ Inserted 70000/122748 rows into integration_outlet_s3_temp
+[2026-07-27T02:47:01.611Z] 🗃️ Inserted 75000/122748 rows into integration_outlet_s3_temp
+[2026-07-27T02:47:01.958Z] 🗃️ Inserted 80000/122748 rows into integration_outlet_s3_temp
+[2026-07-27T02:47:02.291Z] 🗃️ Inserted 85000/122748 rows into integration_outlet_s3_temp
+[2026-07-27T02:47:02.644Z] 🗃️ Inserted 90000/122748 rows into integration_outlet_s3_temp
+[2026-07-27T02:47:02.987Z] 🗃️ Inserted 95000/122748 rows into integration_outlet_s3_temp
+[2026-07-27T02:47:03.345Z] 🗃️ Inserted 100000/122748 rows into integration_outlet_s3_temp
+[2026-07-27T02:47:03.686Z] 🗃️ Inserted 105000/122748 rows into integration_outlet_s3_temp
+[2026-07-27T02:47:04.024Z] 🗃️ Inserted 110000/122748 rows into integration_outlet_s3_temp
+[2026-07-27T02:47:04.367Z] 🗃️ Inserted 115000/122748 rows into integration_outlet_s3_temp
+[2026-07-27T02:47:04.705Z] 🗃️ Inserted 120000/122748 rows into integration_outlet_s3_temp
+[2026-07-27T02:47:04.892Z] 🗃️ Inserted 122748/122748 rows into integration_outlet_s3_temp
+[2026-07-27T02:47:48.527Z] ✅ Transaction committed successfully
+[2026-07-27T02:47:48.528Z] ✅ Successfully processed date: 2026-07-26
+[2026-07-27T02:47:48.529Z] 📅 Processing date: 2026-07-27
+[2026-07-27T02:48:02.540Z] 📥 Saved speed file to upload/speed_CUST_MASTER_27_07_2026.csv
+[2026-07-27T02:48:02.542Z] 🧭 Detected CSV delimiter '|' for speed
+[2026-07-27T02:48:02.861Z] ⚙️ Processed 10000 rows for speed (streaming CSV)
+[2026-07-27T02:48:03.183Z] ⚙️ Processed 20000 rows for speed (streaming CSV)
+[2026-07-27T02:48:03.442Z] ⚙️ Processed 30000 rows for speed (streaming CSV)
+[2026-07-27T02:48:03.703Z] ⚙️ Processed 40000 rows for speed (streaming CSV)
+[2026-07-27T02:48:03.954Z] ⚙️ Processed 50000 rows for speed (streaming CSV)
+[2026-07-27T02:48:04.222Z] ⚙️ Processed 60000 rows for speed (streaming CSV)
+[2026-07-27T02:48:04.476Z] ⚙️ Processed 70000 rows for speed (streaming CSV)
+[2026-07-27T02:48:04.736Z] ⚙️ Processed 80000 rows for speed (streaming CSV)
+[2026-07-27T02:48:05.006Z] ⚙️ Processed 90000 rows for speed (streaming CSV)
+[2026-07-27T02:48:05.259Z] ⚙️ Processed 100000 rows for speed (streaming CSV)
+[2026-07-27T02:48:05.518Z] ⚙️ Processed 110000 rows for speed (streaming CSV)
+[2026-07-27T02:48:05.793Z] ⚙️ Processed 120000 rows for speed (streaming CSV)
+[2026-07-27T02:48:06.065Z] ⚙️ Processed 130000 rows for speed (streaming CSV)
+[2026-07-27T02:48:06.090Z] ✅ Processed 130859 rows from speed
+[2026-07-27T02:48:06.703Z] 🗑️ Cleared temporary table before processing new data
+[2026-07-27T02:48:07.636Z] 🗃️ Inserted 5000/130859 rows into integration_outlet_s3_temp
+[2026-07-27T02:48:08.062Z] 🗃️ Inserted 10000/130859 rows into integration_outlet_s3_temp
+[2026-07-27T02:48:08.433Z] 🗃️ Inserted 15000/130859 rows into integration_outlet_s3_temp
+[2026-07-27T02:48:08.791Z] 🗃️ Inserted 20000/130859 rows into integration_outlet_s3_temp
+[2026-07-27T02:48:09.120Z] 🗃️ Inserted 25000/130859 rows into integration_outlet_s3_temp
+[2026-07-27T02:48:09.424Z] 🗃️ Inserted 30000/130859 rows into integration_outlet_s3_temp
+[2026-07-27T02:48:09.890Z] 🗃️ Inserted 35000/130859 rows into integration_outlet_s3_temp
+[2026-07-27T02:48:10.208Z] 🗃️ Inserted 40000/130859 rows into integration_outlet_s3_temp
+[2026-07-27T02:48:10.517Z] 🗃️ Inserted 45000/130859 rows into integration_outlet_s3_temp
+[2026-07-27T02:48:10.845Z] 🗃️ Inserted 50000/130859 rows into integration_outlet_s3_temp
+[2026-07-27T02:48:11.144Z] 🗃️ Inserted 55000/130859 rows into integration_outlet_s3_temp
+[2026-07-27T02:48:11.454Z] 🗃️ Inserted 60000/130859 rows into integration_outlet_s3_temp
+[2026-07-27T02:48:11.757Z] 🗃️ Inserted 65000/130859 rows into integration_outlet_s3_temp
+[2026-07-27T02:48:12.057Z] 🗃️ Inserted 70000/130859 rows into integration_outlet_s3_temp
+[2026-07-27T02:48:12.372Z] 🗃️ Inserted 75000/130859 rows into integration_outlet_s3_temp
+[2026-07-27T02:48:12.669Z] 🗃️ Inserted 80000/130859 rows into integration_outlet_s3_temp
+[2026-07-27T02:48:12.967Z] 🗃️ Inserted 85000/130859 rows into integration_outlet_s3_temp
+[2026-07-27T02:48:13.275Z] 🗃️ Inserted 90000/130859 rows into integration_outlet_s3_temp
+[2026-07-27T02:48:13.642Z] 🗃️ Inserted 95000/130859 rows into integration_outlet_s3_temp
+[2026-07-27T02:48:13.939Z] 🗃️ Inserted 100000/130859 rows into integration_outlet_s3_temp
+[2026-07-27T02:48:14.232Z] 🗃️ Inserted 105000/130859 rows into integration_outlet_s3_temp
+[2026-07-27T02:48:14.535Z] 🗃️ Inserted 110000/130859 rows into integration_outlet_s3_temp
+[2026-07-27T02:48:14.828Z] 🗃️ Inserted 115000/130859 rows into integration_outlet_s3_temp
+[2026-07-27T02:48:15.181Z] 🗃️ Inserted 120000/130859 rows into integration_outlet_s3_temp
+[2026-07-27T02:48:15.623Z] 🗃️ Inserted 125000/130859 rows into integration_outlet_s3_temp
+[2026-07-27T02:48:15.929Z] 🗃️ Inserted 130000/130859 rows into integration_outlet_s3_temp
+[2026-07-27T02:48:16.040Z] 🗃️ Inserted 130859/130859 rows into integration_outlet_s3_temp
+[2026-07-27T02:49:01.408Z] ✅ Transaction committed successfully
+[2026-07-27T02:49:01.409Z] ✅ Successfully processed date: 2026-07-27
+[2026-07-27T02:49:01.410Z] ✅ Date range sync completed. Processed: 6, Errors: 0
+[2026-07-28T02:42:04.844Z] 🚀 Server running on port 3001
+[2026-07-28T02:42:04.851Z] ⏰ Cron jobs initialized:
+[2026-07-28T02:42:04.851Z]    - S3 Sync: Daily at 7:00 AM
+[2026-07-28T02:42:04.851Z]    - Distributor Sync: Daily at 6:30 AM
+[2026-07-28T02:42:04.851Z]    - Visit Data Sync: Daily at 5:00 AM
+[2026-07-28T02:42:23.268Z] 🔄 Starting distributor data sync for date range: 2026-07-27 to 2026-07-28
+[2026-07-28T02:42:23.270Z] 📅 Processing date: 2026-07-27
+[2026-07-28T02:42:35.096Z] ✅ Final combined CSV saved at upload/DBR2026-07-27T00-00-00-000Z.csv
+[2026-07-28T02:42:35.814Z] 🗑️ Cleared temporary table before processing new data
+[2026-07-28T02:42:36.325Z] ✅ Inserted 2079 distributor records into integration_outlet_s3_temp
+[2026-07-28T02:42:36.772Z] ✅ Transaction committed successfully
+[2026-07-28T02:42:36.774Z] ✅ Distributor data sync completed successfully
+[2026-07-28T02:42:36.774Z] ✅ Successfully processed date: 2026-07-27
+[2026-07-28T02:42:36.775Z] 📅 Processing date: 2026-07-28
+[2026-07-28T02:42:39.321Z] ✅ Final combined CSV saved at upload/DBR2026-07-28T00-00-00-000Z.csv
+[2026-07-28T02:42:39.877Z] 🗑️ Cleared temporary table before processing new data
+[2026-07-28T02:42:39.934Z] ✅ Inserted 14 distributor records into integration_outlet_s3_temp
+[2026-07-28T02:42:40.085Z] ✅ Transaction committed successfully
+[2026-07-28T02:42:40.086Z] ✅ Distributor data sync completed successfully
+[2026-07-28T02:42:40.086Z] ✅ Successfully processed date: 2026-07-28
+[2026-07-28T02:42:40.087Z] ✅ Date range sync completed. Processed: 2, Errors: 0
+[2026-07-28T02:42:50.100Z] 🔄 Starting S3 data sync for date range: 2026-07-27 to 2026-07-28...
+[2026-07-28T02:42:50.101Z] 🔄 Starting S3 data sync for date range: 2026-07-27 to 2026-07-28...
+[2026-07-28T02:42:50.102Z] 🔄 Starting S3 data sync for date range: 2026-07-27 to 2026-07-28
+[2026-07-28T02:42:50.103Z] 📅 Processing date: 2026-07-27
+[2026-07-28T02:43:09.245Z] 📥 Saved speed file to upload/speed_CUST_MASTER_27_07_2026.csv
+[2026-07-28T02:43:09.253Z] 🧭 Detected CSV delimiter '|' for speed
+[2026-07-28T02:43:09.972Z] ⚙️ Processed 10000 rows for speed (streaming CSV)
+[2026-07-28T02:43:10.290Z] ⚙️ Processed 20000 rows for speed (streaming CSV)
+[2026-07-28T02:43:10.602Z] ⚙️ Processed 30000 rows for speed (streaming CSV)
+[2026-07-28T02:43:11.035Z] ⚙️ Processed 40000 rows for speed (streaming CSV)
+[2026-07-28T02:43:11.714Z] ⚙️ Processed 50000 rows for speed (streaming CSV)
+[2026-07-28T02:43:12.122Z] ⚙️ Processed 60000 rows for speed (streaming CSV)
+[2026-07-28T02:43:12.418Z] ⚙️ Processed 70000 rows for speed (streaming CSV)
+[2026-07-28T02:43:12.706Z] ⚙️ Processed 80000 rows for speed (streaming CSV)
+[2026-07-28T02:43:13.313Z] ⚙️ Processed 90000 rows for speed (streaming CSV)
+[2026-07-28T02:43:13.819Z] ⚙️ Processed 100000 rows for speed (streaming CSV)
+[2026-07-28T02:43:14.550Z] ⚙️ Processed 110000 rows for speed (streaming CSV)
+[2026-07-28T02:43:15.266Z] ⚙️ Processed 120000 rows for speed (streaming CSV)
+[2026-07-28T02:43:15.976Z] ⚙️ Processed 130000 rows for speed (streaming CSV)
+[2026-07-28T02:43:16.036Z] ✅ Processed 130859 rows from speed
+[2026-07-28T02:43:16.666Z] 🗑️ Cleared temporary table before processing new data
+[2026-07-28T02:43:18.618Z] 🗃️ Inserted 5000/130859 rows into integration_outlet_s3_temp
+[2026-07-28T02:43:19.538Z] 🗃️ Inserted 10000/130859 rows into integration_outlet_s3_temp
+[2026-07-28T02:43:20.246Z] 🗃️ Inserted 15000/130859 rows into integration_outlet_s3_temp
+[2026-07-28T02:43:20.771Z] 🗃️ Inserted 20000/130859 rows into integration_outlet_s3_temp
+[2026-07-28T02:43:21.212Z] 🗃️ Inserted 25000/130859 rows into integration_outlet_s3_temp
+[2026-07-28T02:43:21.608Z] 🗃️ Inserted 30000/130859 rows into integration_outlet_s3_temp
+[2026-07-28T02:43:21.987Z] 🗃️ Inserted 35000/130859 rows into integration_outlet_s3_temp
+[2026-07-28T02:43:22.331Z] 🗃️ Inserted 40000/130859 rows into integration_outlet_s3_temp
+[2026-07-28T02:43:22.713Z] 🗃️ Inserted 45000/130859 rows into integration_outlet_s3_temp
+[2026-07-28T02:43:23.064Z] 🗃️ Inserted 50000/130859 rows into integration_outlet_s3_temp
+[2026-07-28T02:43:23.401Z] 🗃️ Inserted 55000/130859 rows into integration_outlet_s3_temp
+[2026-07-28T02:43:23.742Z] 🗃️ Inserted 60000/130859 rows into integration_outlet_s3_temp
+[2026-07-28T02:43:24.088Z] 🗃️ Inserted 65000/130859 rows into integration_outlet_s3_temp
+[2026-07-28T02:43:24.415Z] 🗃️ Inserted 70000/130859 rows into integration_outlet_s3_temp
+[2026-07-28T02:43:24.740Z] 🗃️ Inserted 75000/130859 rows into integration_outlet_s3_temp
+[2026-07-28T02:43:25.085Z] 🗃️ Inserted 80000/130859 rows into integration_outlet_s3_temp
+[2026-07-28T02:43:25.417Z] 🗃️ Inserted 85000/130859 rows into integration_outlet_s3_temp
+[2026-07-28T02:43:25.763Z] 🗃️ Inserted 90000/130859 rows into integration_outlet_s3_temp
+[2026-07-28T02:43:26.102Z] 🗃️ Inserted 95000/130859 rows into integration_outlet_s3_temp
+[2026-07-28T02:43:26.437Z] 🗃️ Inserted 100000/130859 rows into integration_outlet_s3_temp
+[2026-07-28T02:43:26.793Z] 🗃️ Inserted 105000/130859 rows into integration_outlet_s3_temp
+[2026-07-28T02:43:27.138Z] 🗃️ Inserted 110000/130859 rows into integration_outlet_s3_temp
+[2026-07-28T02:43:27.477Z] 🗃️ Inserted 115000/130859 rows into integration_outlet_s3_temp
+[2026-07-28T02:43:27.804Z] 🗃️ Inserted 120000/130859 rows into integration_outlet_s3_temp
+[2026-07-28T02:43:28.129Z] 🗃️ Inserted 125000/130859 rows into integration_outlet_s3_temp
+[2026-07-28T02:43:28.477Z] 🗃️ Inserted 130000/130859 rows into integration_outlet_s3_temp
+[2026-07-28T02:43:28.589Z] 🗃️ Inserted 130859/130859 rows into integration_outlet_s3_temp
+[2026-07-28T02:44:19.800Z] ✅ Transaction committed successfully
+[2026-07-28T02:44:19.802Z] ✅ Successfully processed date: 2026-07-27
+[2026-07-28T02:44:19.803Z] 📅 Processing date: 2026-07-28
+[2026-07-28T02:44:24.847Z] 📥 Saved speed file to upload/speed_CUST_MASTER_28_07_2026.csv
+[2026-07-28T02:44:24.857Z] 🧭 Detected CSV delimiter '|' for speed
+[2026-07-28T02:44:25.518Z] ⚙️ Processed 10000 rows for speed (streaming CSV)
+[2026-07-28T02:44:25.839Z] ⚙️ Processed 20000 rows for speed (streaming CSV)
+[2026-07-28T02:44:26.192Z] ⚙️ Processed 30000 rows for speed (streaming CSV)
+[2026-07-28T02:44:26.898Z] ⚙️ Processed 40000 rows for speed (streaming CSV)
+[2026-07-28T02:44:27.421Z] ⚙️ Processed 50000 rows for speed (streaming CSV)
+[2026-07-28T02:44:27.537Z] ✅ Processed 53213 rows from speed
+[2026-07-28T02:44:28.160Z] 🗑️ Cleared temporary table before processing new data
+[2026-07-28T02:44:29.275Z] 🗃️ Inserted 5000/53213 rows into integration_outlet_s3_temp
+[2026-07-28T02:44:29.748Z] 🗃️ Inserted 10000/53213 rows into integration_outlet_s3_temp
+[2026-07-28T02:44:30.160Z] 🗃️ Inserted 15000/53213 rows into integration_outlet_s3_temp
+[2026-07-28T02:44:30.533Z] 🗃️ Inserted 20000/53213 rows into integration_outlet_s3_temp
+[2026-07-28T02:44:30.881Z] 🗃️ Inserted 25000/53213 rows into integration_outlet_s3_temp
+[2026-07-28T02:44:31.213Z] 🗃️ Inserted 30000/53213 rows into integration_outlet_s3_temp
+[2026-07-28T02:44:31.629Z] 🗃️ Inserted 35000/53213 rows into integration_outlet_s3_temp
+[2026-07-28T02:44:31.968Z] 🗃️ Inserted 40000/53213 rows into integration_outlet_s3_temp
+[2026-07-28T02:44:32.304Z] 🗃️ Inserted 45000/53213 rows into integration_outlet_s3_temp
+[2026-07-28T02:44:32.630Z] 🗃️ Inserted 50000/53213 rows into integration_outlet_s3_temp
+[2026-07-28T02:44:32.841Z] 🗃️ Inserted 53213/53213 rows into integration_outlet_s3_temp
+[2026-07-28T02:44:59.403Z] ✅ Transaction committed successfully
+[2026-07-28T02:44:59.405Z] ✅ Successfully processed date: 2026-07-28
+[2026-07-28T02:44:59.406Z] ✅ Date range sync completed. Processed: 2, Errors: 0

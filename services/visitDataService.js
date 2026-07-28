@@ -3,7 +3,6 @@ const mysql = require('mysql2/promise');
 const path = require('path');
 const fs = require('fs');
 const readline = require('readline');
-const moment = require('moment');
 const config = require('../config/config');
 const { log } = require('../utils/logger');
 
@@ -15,13 +14,6 @@ const s3Client = new S3Client({
     secretAccessKey: config.aws.s3.secretAccessKey
   }
 });
-
-// Build the fixed dated key prefix. Month/day are zero-padded numeric.
-// Filenames under this prefix are discovered at runtime, never hardcoded.
-function buildPrefix(dateStr) {
-  const d = moment(dateStr);
-  return `${config.visitData.s3PrefixBase}/${d.format('YYYY')}/${d.format('MM')}/${d.format('DD')}/`;
-}
 
 // TODO: replace this pass-through with the real CSV-header -> DB-column mapping
 // once the visit-data schema is known. Until then, keep raw columns plus metadata
@@ -75,19 +67,104 @@ function detectDelimiter(headerLine) {
   return best;
 }
 
-async function fetchAndSaveVisitData(dateStr) {
-  const prefix = buildPrefix(dateStr);
-  log(`🔎 Discovering visit-data files under: ${prefix}`);
-
-  const { Contents } = await s3Client.send(new ListObjectsV2Command({
+async function checkPrefixEntries(prefix) {
+  const normalizedPrefix = `${prefix.replace(/\/$/, '')}/`;
+  const { CommonPrefixes, Contents } = await s3Client.send(new ListObjectsV2Command({
     Bucket: config.aws.s3.bucket,
-    Prefix: prefix
+    Prefix: normalizedPrefix,
+    Delimiter: '/'
   }));
 
-  const files = (Contents || []).filter((f) => f.Key.endsWith('.csv'));
+  const folderNames = (CommonPrefixes || [])
+    .map((item) => item.Prefix || '')
+    .map((itemPrefix) => itemPrefix.slice(normalizedPrefix.length).replace(/\/$/, ''))
+    .filter(Boolean)
+    .sort();
+
+  const fileNames = (Contents || [])
+    .map((item) => item.Key || '')
+    .filter((key) => key && key !== normalizedPrefix)
+    .map((key) => key.slice(normalizedPrefix.length))
+    .filter(Boolean)
+    .sort();
+
+  return {
+    exists: folderNames.length > 0 || fileNames.length > 0,
+    folderNames,
+    fileNames
+  };
+}
+
+async function listVisitDataEntries(basePrefix) {
+  const normalizedBasePrefix = `${basePrefix.replace(/\/$/, '')}/`;
+  const allObjects = [];
+  let continuationToken;
+
+  do {
+    // List the full VISIT_DATA tree so the debug output is not tied to a specific date folder.
+    const response = await s3Client.send(new ListObjectsV2Command({
+      Bucket: config.aws.s3.bucket,
+      Prefix: normalizedBasePrefix,
+      ContinuationToken: continuationToken
+    }));
+    allObjects.push(...(response.Contents || []));
+    continuationToken = response.IsTruncated ? response.NextContinuationToken : undefined;
+  } while (continuationToken);
+
+  const folderNames = Array.from(new Set(
+    allObjects
+      .map((item) => item.Key || '')
+      .filter((key) => key.startsWith(normalizedBasePrefix) && key !== normalizedBasePrefix)
+      .map((key) => key.slice(normalizedBasePrefix.length))
+      .filter(Boolean)
+      .flatMap((relativeKey) => {
+        const parts = relativeKey.split('/').slice(0, -1);
+        const folders = [];
+        let currentPath = '';
+        for (const part of parts) {
+          currentPath = currentPath ? `${currentPath}/${part}` : part;
+          folders.push(currentPath);
+        }
+        return folders;
+      })
+  )).sort();
+
+  const fileNames = allObjects
+    .map((item) => item.Key || '')
+    .filter((key) => key.startsWith(normalizedBasePrefix) && key !== normalizedBasePrefix && !key.endsWith('/'))
+    .map((key) => key.slice(normalizedBasePrefix.length))
+    .filter(Boolean)
+    .sort();
+
+  return {
+    folderNames,
+    fileNames,
+    objects: allObjects
+  };
+}
+
+async function logVisitDataEntries(basePrefix) {
+  const { folderNames, fileNames, objects } = await listVisitDataEntries(basePrefix);
+  console.log('VISIT_DATA folder names:', folderNames);
+  console.log('VISIT_DATA filenames:', fileNames);
+  return objects;
+}
+
+async function fetchAndSaveVisitData() {
+  const speedPrefix = 'SPEED';
+  log(`🔎 Checking S3 bucket/prefix: ${config.aws.s3.bucket}/${speedPrefix}/`);
+  const speedEntries = await checkPrefixEntries(speedPrefix);
+  log(`📂 ${speedPrefix}/ exists in bucket ${config.aws.s3.bucket}: ${speedEntries.exists}`);
+  console.log('SPEED folder names:', speedEntries.folderNames);
+  console.log('SPEED filenames:', speedEntries.fileNames);
+
+  log(`🔎 Listing visit-data entries under: ${config.visitData.s3PrefixBase}/`);
+  const objects = await logVisitDataEntries(config.visitData.s3PrefixBase);
+  const files = (objects || []).filter((f) => (f.Key || '').toLowerCase().endsWith('.csv'));
+
   if (files.length === 0) {
-    log(`⚠️ No CSV files found under ${prefix}`);
-    return [];
+    log(`⚠️ No CSV files found under ${config.visitData.s3PrefixBase}/`);
+    return { rows: [], fileKey: null, fileName: null };
   }
 
   // Pick the newest file by LastModified.
@@ -102,7 +179,7 @@ async function fetchAndSaveVisitData(dateStr) {
   // Save the raw file locally.
   fs.mkdirSync(config.visitData.rawDir, { recursive: true });
   const fileName = path.basename(latestFile.Key);
-  const savePath = path.join(config.visitData.rawDir, `${dateStr}_${fileName}`);
+  const savePath = path.join(config.visitData.rawDir, `${Date.now()}_${fileName}`);
   const fileBuffer = await fileObj.Body.transformToByteArray();
   fs.writeFileSync(savePath, Buffer.from(fileBuffer));
   log(`📥 Saved raw visit-data file to ${savePath}`);
@@ -142,7 +219,11 @@ async function fetchAndSaveVisitData(dateStr) {
   }
 
   log(`✅ Parsed ${processed} visit-data rows from ${fileName}`);
-  return transformed;
+  return {
+    rows: transformed,
+    fileKey: latestFile.Key,
+    fileName
+  };
 }
 
 // Allow the stored procedure plenty of time on large volumes (mirrors s3Service).
@@ -200,95 +281,40 @@ async function syncVisitDataToDatabase(rows) {
   }
 }
 
-async function syncVisitData(dateStr) {
+async function syncVisitData() {
   try {
-    const rows = await fetchAndSaveVisitData(dateStr);
+    const { rows, fileKey, fileName } = await fetchAndSaveVisitData();
     if (rows.length > 0) {
       await syncVisitDataToDatabase(rows);
+      return {
+        selectedFile: fileKey,
+        fileName,
+        rowCount: rows.length
+      };
     } else {
       log('⚠️ No visit data to insert; skipping DB sync.');
+      return {
+        selectedFile: null,
+        fileName: null,
+        rowCount: 0
+      };
     }
   } catch (error) {
-    log(`❌ Error in visit-data sync for ${dateStr}: ${error.message}`);
+    log(`❌ Error in visit-data sync: ${error.message}`);
     throw error;
   }
 }
 
 async function syncVisitDataRange(startDate, endDate) {
-  const start = moment(startDate);
-  const end = moment(endDate);
-
-  if (!start.isValid() || !end.isValid()) {
-    throw new Error('Invalid date format. Please use YYYY-MM-DD');
-  }
-  if (end.isBefore(start)) {
-    throw new Error('endDate must be after startDate');
-  }
-
-  log(`🔄 Starting visit-data sync for date range: ${startDate} to ${endDate}`);
-
-  const results = [];
-  const currentDate = start.clone();
-  let totalProcessed = 0;
-  let totalErrors = 0;
-
-  while (currentDate.isSameOrBefore(end)) {
-    const dateStr = currentDate.format('YYYY-MM-DD');
-    log(`📅 Processing visit-data date: ${dateStr}`);
-    try {
-      // eslint-disable-next-line no-await-in-loop
-      await syncVisitData(dateStr);
-      totalProcessed++;
-      results.push({ date: dateStr, status: 'success', message: `Successfully synced visit data for ${dateStr}` });
-      log(`✅ Successfully processed visit-data date: ${dateStr}`);
-    } catch (error) {
-      totalErrors++;
-      results.push({ date: dateStr, status: 'error', message: error.message });
-      log(`❌ Error processing visit-data date ${dateStr}: ${error.message}`);
-    }
-    currentDate.add(1, 'days');
-  }
-
-  log(`✅ Visit-data range sync completed. Processed: ${totalProcessed}, Errors: ${totalErrors}`);
-
-  return {
-    startDate,
-    endDate,
-    totalDates: results.length,
-    successful: totalProcessed,
-    failed: totalErrors,
-    results
-  };
-}
-
-// Prefer today's date if its S3 prefix contains files, else fall back to yesterday.
-async function resolveLatestVisitDate() {
-  const today = moment().format('YYYY-MM-DD');
-  const yesterday = moment().subtract(1, 'days').format('YYYY-MM-DD');
-  try {
-    const { Contents } = await s3Client.send(new ListObjectsV2Command({
-      Bucket: config.aws.s3.bucket,
-      Prefix: buildPrefix(today)
-    }));
-    const hasToday = (Contents || []).some((f) => f.Key.endsWith('.csv'));
-    if (hasToday) {
-      log(`🗓️ Visit-data: today's folder (${today}) has files; using ${today}`);
-      return today;
-    }
-    log(`🗓️ Visit-data: today's folder (${today}) empty; falling back to ${yesterday}`);
-    return yesterday;
-  } catch (error) {
-    log(`⚠️ Visit-data: could not check today's folder (${error.message}); falling back to ${yesterday}`);
-    return yesterday;
-  }
+  log(`⚠️ Date range arguments (${startDate} to ${endDate}) are ignored for visit-data sync right now.`);
+  return syncVisitData();
 }
 
 module.exports = {
-  buildPrefix,
   transformVisitRow,
+  listVisitDataEntries,
   fetchAndSaveVisitData,
   syncVisitDataToDatabase,
   syncVisitData,
-  syncVisitDataRange,
-  resolveLatestVisitDate
+  syncVisitDataRange
 };
