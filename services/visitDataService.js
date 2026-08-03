@@ -68,9 +68,9 @@ function detectDelimiter(headerLine) {
   return best;
 }
 
-// Blank ORDER_ID must become SQL NULL, not '', so MySQL's unique-key-allows-
-// multiple-NULLs semantics make blank-ORDER_ID rows always insert as new
-// rows instead of colliding with each other on the ORDER_ID unique key.
+// Blank ORDER_NO must become SQL NULL, not '', so MySQL's unique-key-allows-
+// multiple-NULLs semantics make blank-ORDER_NO rows always insert as new
+// rows instead of colliding with each other on the ORDER_NO unique key.
 function normalizeOrderId(value) {
   if (value === undefined || value === null) return null;
   if (typeof value === 'string' && value.trim() === '') return null;
@@ -240,32 +240,32 @@ async function syncVisitDataToDatabase(rows) {
     // ON DUPLICATE KEY UPDATE silently degrades to a plain INSERT (no error)
     // when the table has no unique key for it to trigger on. Since the old
     // DELETE-before-insert safety net is gone, verify a UNIQUE index on
-    // ORDER_ID actually exists before inserting anything, so a missing schema
+    // ORDER_NO actually exists before inserting anything, so a missing schema
     // migration fails loudly instead of silently duplicating rows on re-sync.
-    const [[{ cnt: uniqueOrderIdKeyCount }]] = await connection.query(
+    const [[{ cnt: uniqueOrderNoKeyCount }]] = await connection.query(
       `SELECT COUNT(*) AS cnt
        FROM INFORMATION_SCHEMA.STATISTICS
        WHERE TABLE_SCHEMA = DATABASE()
          AND TABLE_NAME = ?
-         AND COLUMN_NAME = 'ORDER_ID'
+         AND COLUMN_NAME = 'ORDER_NO'
          AND NON_UNIQUE = 0`,
       [tempTable]
     );
-    if (uniqueOrderIdKeyCount === 0) {
+    if (uniqueOrderNoKeyCount === 0) {
       throw new Error(
-        `${tempTable} is missing a UNIQUE KEY on ORDER_ID; upsert-by-ORDER_ID would silently degrade to duplicate inserts`
+        `${tempTable} is missing a UNIQUE KEY on ORDER_NO; upsert-by-ORDER_NO would silently degrade to duplicate inserts`
       );
     }
 
-    // Syncs append/upsert by ORDER_ID rather than truncating by date: a real
-    // ORDER_ID updates its existing row on re-sync, while a blank ORDER_ID
+    // Syncs append/upsert by ORDER_NO rather than truncating by date: a real
+    // ORDER_NO updates its existing row on re-sync, while a blank ORDER_NO
     // (stored as NULL) always inserts as a new row, since MySQL unique keys
     // allow multiple NULLs to coexist.
-    const updateClause = buildUpsertUpdateClause(columns, 'ORDER_ID');
+    const updateClause = buildUpsertUpdateClause(columns, 'ORDER_NO');
     const insertQuery = `INSERT INTO ${tempTable} (${columns.join(', ')}) VALUES ? ON DUPLICATE KEY UPDATE ${updateClause}`;
     const values = rows.map((row) => config.visitData.keysToStore.map((key) => {
       const value = row[key] ?? null;
-      return key === 'ORDER_ID' ? normalizeOrderId(value) : value;
+      return key === 'ORDER_NO' ? normalizeOrderId(value) : value;
     }));
 
     const INSERT_BATCH_SIZE = 5000;

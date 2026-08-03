@@ -10,12 +10,12 @@ assert.strictEqual(normalizeOrderId(null), null, 'null stays null');
 assert.strictEqual(normalizeOrderId(0), 0, 'falsy non-string value passes through unchanged');
 
 // buildUpsertUpdateClause
-const columns = ['DIST_CD', 'VISIT_ID', 'ORDER_ID'];
-const clause = buildUpsertUpdateClause(columns, 'ORDER_ID');
+const columns = ['DIST_CD', 'VISIT_ID', 'ORDER_NO'];
+const clause = buildUpsertUpdateClause(columns, 'ORDER_NO');
 assert.strictEqual(
   clause,
   '`DIST_CD`=VALUES(`DIST_CD`), `VISIT_ID`=VALUES(`VISIT_ID`)',
-  'excludes ORDER_ID and formats remaining columns'
+  'excludes ORDER_NO and formats remaining columns'
 );
 
 const clauseNoExclusion = buildUpsertUpdateClause(['A', 'B'], 'NOT_PRESENT');

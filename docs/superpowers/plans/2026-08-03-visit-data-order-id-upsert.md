@@ -1,30 +1,30 @@
-# Visit-Data ORDER_ID Upsert Implementation Plan
+# Visit-Data ORDER_NO Upsert Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Stop truncating `integration_visit_data_temp` by date on every visit-data sync; instead append rows and upsert by `ORDER_ID`, treating a blank `ORDER_ID` as always-insert.
+**Goal:** Stop truncating `integration_visit_data_temp` by date on every visit-data sync; instead append rows and upsert by `ORDER_NO`, treating a blank `ORDER_NO` as always-insert.
 
-**Architecture:** Add `ORDER_ID` to the configured column list. Replace the per-batch `DELETE FROM ... WHERE VISIT_DT IN (?)` step with a plain `INSERT ... ON DUPLICATE KEY UPDATE` that updates every column except `ORDER_ID`. Coerce blank `ORDER_ID` values to SQL `NULL` before insert so MySQL's unique-key-allows-multiple-NULLs semantics naturally make blank-`ORDER_ID` rows always insert as new rows instead of colliding.
+**Architecture:** Add `ORDER_NO` to the configured column list. Replace the per-batch `DELETE FROM ... WHERE VISIT_DT IN (?)` step with a plain `INSERT ... ON DUPLICATE KEY UPDATE` that updates every column except `ORDER_NO`. Coerce blank `ORDER_NO` values to SQL `NULL` before insert so MySQL's unique-key-allows-multiple-NULLs semantics naturally make blank-`ORDER_NO` rows always insert as new rows instead of colliding.
 
 **Tech Stack:** Node.js, `mysql2/promise`, Node's built-in `assert` module for tests (no test framework is configured in this repo).
 
 ## Global Constraints
 
 - `config.visitData.insertColumns` and `config.visitData.keysToStore` must stay in the same order as each other (existing repo convention, see comments in `config/config.js:43,49`).
-- The DB schema change (adding `ORDER_ID` column + `UNIQUE KEY` on `integration_visit_data_temp`) is being applied by the user directly — do not write a migration script for it.
+- The DB schema change (adding `ORDER_NO` column + `UNIQUE KEY` on `integration_visit_data_temp`) is being applied by the user directly — do not write a migration script for it.
 - Do not touch S3 fetch, CSV parsing/delimiter detection, or the controller/route layer — out of scope per the approved spec.
 
 ---
 
-### Task 1: Add ORDER_ID to config
+### Task 1: Add ORDER_NO to config
 
 **Files:**
 - Modify: `config/config.js:44-48` (`insertColumns`) and `config/config.js:50-54` (`keysToStore`)
 
 **Interfaces:**
-- Produces: `config.visitData.insertColumns` and `config.visitData.keysToStore` both include `'ORDER_ID'` at the same array index in both lists.
+- Produces: `config.visitData.insertColumns` and `config.visitData.keysToStore` both include `'ORDER_NO'` at the same array index in both lists.
 
-- [ ] **Step 1: Add `'ORDER_ID'` to both arrays**
+- [ ] **Step 1: Add `'ORDER_NO'` to both arrays**
 
 In `config/config.js`, change:
 
@@ -51,14 +51,14 @@ to:
       'DIST_CD', 'SLSMAN_CD', 'VISIT_DT', 'CUST_CD', 'VISIT_ID', 'VISIT_KEY',
       'TIME_IN', 'TIME_OUT', 'TIME_SPENT', 'SLSORD_AMT', 'CSHORD_AMT',
       'VISIT_TYPE', 'VISIT_IND', 'HHT_SUBMIT_DT', 'TIME_OUT_LONG', 'TIME_OUT_LAT',
-      'ORDER_ID'
+      'ORDER_NO'
     ],
     // Order MUST match insertColumns above.
     keysToStore: [
       'DIST_CD', 'SLSMAN_CD', 'VISIT_DT', 'CUST_CD', 'VISIT_ID', 'VISIT_KEY',
       'TIME_IN', 'TIME_OUT', 'TIME_SPENT', 'SLSORD_AMT', 'CSHORD_AMT',
       'VISIT_TYPE', 'VISIT_IND', 'HHT_SUBMIT_DT', 'TIME_OUT_LONG', 'TIME_OUT_LAT',
-      'ORDER_ID'
+      'ORDER_NO'
     ]
 ```
 
@@ -66,7 +66,7 @@ to:
 
 Run:
 ```bash
-node -e "const c = require('./config/config'); console.log(c.visitData.insertColumns.includes('ORDER_ID'), c.visitData.keysToStore.includes('ORDER_ID'), c.visitData.insertColumns.length === c.visitData.keysToStore.length)"
+node -e "const c = require('./config/config'); console.log(c.visitData.insertColumns.includes('ORDER_NO'), c.visitData.keysToStore.includes('ORDER_NO'), c.visitData.insertColumns.length === c.visitData.keysToStore.length)"
 ```
 Expected output: `true true true`
 
@@ -74,7 +74,7 @@ Expected output: `true true true`
 
 ```bash
 git add config/config.js
-git commit -m "Add ORDER_ID to visit-data insert columns"
+git commit -m "Add ORDER_NO to visit-data insert columns"
 ```
 
 ---
@@ -89,7 +89,7 @@ git commit -m "Add ORDER_ID to visit-data insert columns"
 - Consumes: nothing from other tasks.
 - Produces:
   - `normalizeOrderId(value)` — exported from `services/visitDataService.js`. Takes any value; returns `null` if the value is `undefined`, `null`, or (after trimming) an empty string; otherwise returns the value unchanged.
-  - `buildUpsertUpdateClause(columns, excludeColumn)` — exported from `services/visitDataService.js`. Takes an array of column-name strings and a column name to exclude (e.g. `'ORDER_ID'`); returns a comma-joined string of `` `col`=VALUES(`col`) `` for every column except the excluded one, preserving input order.
+  - `buildUpsertUpdateClause(columns, excludeColumn)` — exported from `services/visitDataService.js`. Takes an array of column-name strings and a column name to exclude (e.g. `'ORDER_NO'`); returns a comma-joined string of `` `col`=VALUES(`col`) `` for every column except the excluded one, preserving input order.
 
 - [ ] **Step 1: Write the failing test**
 
@@ -108,12 +108,12 @@ assert.strictEqual(normalizeOrderId(null), null, 'null stays null');
 assert.strictEqual(normalizeOrderId(0), 0, 'falsy non-string value passes through unchanged');
 
 // buildUpsertUpdateClause
-const columns = ['DIST_CD', 'VISIT_ID', 'ORDER_ID'];
-const clause = buildUpsertUpdateClause(columns, 'ORDER_ID');
+const columns = ['DIST_CD', 'VISIT_ID', 'ORDER_NO'];
+const clause = buildUpsertUpdateClause(columns, 'ORDER_NO');
 assert.strictEqual(
   clause,
   '`DIST_CD`=VALUES(`DIST_CD`), `VISIT_ID`=VALUES(`VISIT_ID`)',
-  'excludes ORDER_ID and formats remaining columns'
+  'excludes ORDER_NO and formats remaining columns'
 );
 
 const clauseNoExclusion = buildUpsertUpdateClause(['A', 'B'], 'NOT_PRESENT');
@@ -136,9 +136,9 @@ Expected: `TypeError: normalizeOrderId is not a function` (or similar — the fu
 In `services/visitDataService.js`, add after the `detectDelimiter` function (currently ending at line 69):
 
 ```js
-// Blank ORDER_ID must become SQL NULL, not '', so MySQL's unique-key-allows-
-// multiple-NULLs semantics make blank-ORDER_ID rows always insert as new
-// rows instead of colliding with each other on the ORDER_ID unique key.
+// Blank ORDER_NO must become SQL NULL, not '', so MySQL's unique-key-allows-
+// multiple-NULLs semantics make blank-ORDER_NO rows always insert as new
+// rows instead of colliding with each other on the ORDER_NO unique key.
 function normalizeOrderId(value) {
   if (value === undefined || value === null) return null;
   if (typeof value === 'string' && value.trim() === '') return null;
@@ -185,14 +185,14 @@ git commit -m "Add normalizeOrderId and buildUpsertUpdateClause helpers"
 
 ---
 
-### Task 3: Wire upsert-by-ORDER_ID into syncVisitDataToDatabase
+### Task 3: Wire upsert-by-ORDER_NO into syncVisitDataToDatabase
 
 **Files:**
 - Modify: `services/visitDataService.js:203-254` (`syncVisitDataToDatabase`)
 
 **Interfaces:**
 - Consumes: `normalizeOrderId(value)` and `buildUpsertUpdateClause(columns, excludeColumn)` from Task 2.
-- Produces: `syncVisitDataToDatabase(rows)` (signature unchanged) no longer deletes by `VISIT_DT`; it appends and upserts by `ORDER_ID`.
+- Produces: `syncVisitDataToDatabase(rows)` (signature unchanged) no longer deletes by `VISIT_DT`; it appends and upserts by `ORDER_NO`.
 
 - [ ] **Step 1: Remove the delete-by-VISIT_DT block and change value-building**
 
@@ -228,15 +228,15 @@ with:
     const columns = config.visitData.insertColumns;
     const tempTable = config.visitData.tempTable;
 
-    // Syncs append/upsert by ORDER_ID rather than truncating by date: a real
-    // ORDER_ID updates its existing row on re-sync, while a blank ORDER_ID
+    // Syncs append/upsert by ORDER_NO rather than truncating by date: a real
+    // ORDER_NO updates its existing row on re-sync, while a blank ORDER_NO
     // (stored as NULL) always inserts as a new row, since MySQL unique keys
     // allow multiple NULLs to coexist.
-    const updateClause = buildUpsertUpdateClause(columns, 'ORDER_ID');
+    const updateClause = buildUpsertUpdateClause(columns, 'ORDER_NO');
     const insertQuery = `INSERT INTO ${tempTable} (${columns.join(', ')}) VALUES ? ON DUPLICATE KEY UPDATE ${updateClause}`;
     const values = rows.map((row) => config.visitData.keysToStore.map((key) => {
       const value = row[key] ?? null;
-      return key === 'ORDER_ID' ? normalizeOrderId(value) : value;
+      return key === 'ORDER_NO' ? normalizeOrderId(value) : value;
     }));
 ```
 
@@ -252,23 +252,23 @@ node -e "
 const config = require('./config/config');
 const { buildUpsertUpdateClause, normalizeOrderId } = require('./services/visitDataService');
 const columns = config.visitData.insertColumns;
-const clause = buildUpsertUpdateClause(columns, 'ORDER_ID');
+const clause = buildUpsertUpdateClause(columns, 'ORDER_NO');
 console.log('INSERT INTO ' + config.visitData.tempTable + ' (' + columns.join(', ') + ') VALUES ? ON DUPLICATE KEY UPDATE ' + clause);
 console.log('blank ->', normalizeOrderId(''));
 console.log('real ->', normalizeOrderId('ORD-9'));
 "
 ```
-Expected: prints a single `INSERT ... ON DUPLICATE KEY UPDATE ...` statement whose update clause lists every column except `ORDER_ID`, followed by `blank -> null` and `real -> ORD-9`.
+Expected: prints a single `INSERT ... ON DUPLICATE KEY UPDATE ...` statement whose update clause lists every column except `ORDER_NO`, followed by `blank -> null` and `real -> ORD-9`.
 
 - [ ] **Step 4: Commit**
 
 ```bash
 git add services/visitDataService.js
-git commit -m "Upsert visit-data rows by ORDER_ID instead of truncating by VISIT_DT"
+git commit -m "Upsert visit-data rows by ORDER_NO instead of truncating by VISIT_DT"
 ```
 
 ---
 
 ## Post-plan note (not a task)
 
-Before running a real sync against `integration_visit_data_temp`, the user must apply the schema change described in the spec: add an `ORDER_ID` column and a `UNIQUE KEY` on it. Until that's done, the `ON DUPLICATE KEY UPDATE` clause will insert-only (no unique key to trigger on), which will silently reintroduce duplicate rows on re-sync.
+Before running a real sync against `integration_visit_data_temp`, the user must apply the schema change described in the spec: add an `ORDER_NO` column and a `UNIQUE KEY` on it. Until that's done, the `ON DUPLICATE KEY UPDATE` clause will insert-only (no unique key to trigger on), which will silently reintroduce duplicate rows on re-sync.
