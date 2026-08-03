@@ -68,6 +68,24 @@ function detectDelimiter(headerLine) {
   return best;
 }
 
+// Blank ORDER_ID must become SQL NULL, not '', so MySQL's unique-key-allows-
+// multiple-NULLs semantics make blank-ORDER_ID rows always insert as new
+// rows instead of colliding with each other on the ORDER_ID unique key.
+function normalizeOrderId(value) {
+  if (value === undefined || value === null) return null;
+  if (typeof value === 'string' && value.trim() === '') return null;
+  return value;
+}
+
+// Builds the "col=VALUES(col), ..." clause for ON DUPLICATE KEY UPDATE,
+// skipping the unique-key column itself.
+function buildUpsertUpdateClause(columns, excludeColumn) {
+  return columns
+    .filter((col) => col !== excludeColumn)
+    .map((col) => `\`${col}\`=VALUES(\`${col}\`)`)
+    .join(', ');
+}
+
 async function listVisitDataEntries(basePrefix) {
   const normalizedBasePrefix = `${basePrefix.replace(/\/$/, '')}/`;
   const allObjects = [];
@@ -337,5 +355,7 @@ module.exports = {
   fetchAndSaveVisitData,
   syncVisitDataToDatabase,
   syncVisitData,
-  syncVisitDataRange
+  syncVisitDataRange,
+  normalizeOrderId,
+  buildUpsertUpdateClause
 };
