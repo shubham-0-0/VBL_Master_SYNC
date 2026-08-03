@@ -44,13 +44,15 @@ module.exports = {
     insertColumns: [
       'DIST_CD', 'SLSMAN_CD', 'VISIT_DT', 'CUST_CD', 'VISIT_ID', 'VISIT_KEY',
       'TIME_IN', 'TIME_OUT', 'TIME_SPENT', 'SLSORD_AMT', 'CSHORD_AMT',
-      'VISIT_TYPE', 'VISIT_IND', 'HHT_SUBMIT_DT', 'TIME_OUT_LONG', 'TIME_OUT_LAT'
+      'VISIT_TYPE', 'VISIT_IND', 'HHT_SUBMIT_DT', 'TIME_OUT_LONG', 'TIME_OUT_LAT',
+      'ORDER_ID'
     ],
     // Order MUST match insertColumns above.
     keysToStore: [
       'DIST_CD', 'SLSMAN_CD', 'VISIT_DT', 'CUST_CD', 'VISIT_ID', 'VISIT_KEY',
       'TIME_IN', 'TIME_OUT', 'TIME_SPENT', 'SLSORD_AMT', 'CSHORD_AMT',
-      'VISIT_TYPE', 'VISIT_IND', 'HHT_SUBMIT_DT', 'TIME_OUT_LONG', 'TIME_OUT_LAT'
+      'VISIT_TYPE', 'VISIT_IND', 'HHT_SUBMIT_DT', 'TIME_OUT_LONG', 'TIME_OUT_LAT',
+      'ORDER_ID'
     ]
   },
   keysToStore: [
