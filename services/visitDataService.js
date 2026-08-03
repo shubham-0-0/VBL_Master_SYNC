@@ -3,6 +3,7 @@ const mysql = require('mysql2/promise');
 const path = require('path');
 const fs = require('fs');
 const readline = require('readline');
+const moment = require('moment');
 const config = require('../config/config');
 const { log } = require('../utils/logger');
 
@@ -67,34 +68,6 @@ function detectDelimiter(headerLine) {
   return best;
 }
 
-async function checkPrefixEntries(prefix) {
-  const normalizedPrefix = `${prefix.replace(/\/$/, '')}/`;
-  const { CommonPrefixes, Contents } = await s3Client.send(new ListObjectsV2Command({
-    Bucket: config.aws.s3.bucket,
-    Prefix: normalizedPrefix,
-    Delimiter: '/'
-  }));
-
-  const folderNames = (CommonPrefixes || [])
-    .map((item) => item.Prefix || '')
-    .map((itemPrefix) => itemPrefix.slice(normalizedPrefix.length).replace(/\/$/, ''))
-    .filter(Boolean)
-    .sort();
-
-  const fileNames = (Contents || [])
-    .map((item) => item.Key || '')
-    .filter((key) => key && key !== normalizedPrefix)
-    .map((key) => key.slice(normalizedPrefix.length))
-    .filter(Boolean)
-    .sort();
-
-  return {
-    exists: folderNames.length > 0 || fileNames.length > 0,
-    folderNames,
-    fileNames
-  };
-}
-
 async function listVisitDataEntries(basePrefix) {
   const normalizedBasePrefix = `${basePrefix.replace(/\/$/, '')}/`;
   const allObjects = [];
@@ -143,33 +116,30 @@ async function listVisitDataEntries(basePrefix) {
   };
 }
 
-async function logVisitDataEntries(basePrefix) {
-  const { folderNames, fileNames, objects } = await listVisitDataEntries(basePrefix);
-  console.log('VISIT_DATA folder names:', folderNames);
-  console.log('VISIT_DATA filenames:', fileNames);
-  return objects;
+// Builds the dated S3 prefix for a given YYYY-MM-DD date, e.g. SPEED/VISIT_DATA/2026/07/29
+function buildVisitDataPrefix(dateStr) {
+  const parsed = moment(dateStr, 'YYYY-MM-DD', true);
+  if (!parsed.isValid()) {
+    throw new Error(`Invalid date format: ${dateStr}. Expected YYYY-MM-DD.`);
+  }
+  return `${config.visitData.s3PrefixBase}/${parsed.format('YYYY/MM/DD')}`;
 }
 
-async function fetchAndSaveVisitData() {
-  const speedPrefix = 'SPEED';
-  log(`🔎 Checking S3 bucket/prefix: ${config.aws.s3.bucket}/${speedPrefix}/`);
-  const speedEntries = await checkPrefixEntries(speedPrefix);
-  log(`📂 ${speedPrefix}/ exists in bucket ${config.aws.s3.bucket}: ${speedEntries.exists}`);
-  console.log('SPEED folder names:', speedEntries.folderNames);
-  console.log('SPEED filenames:', speedEntries.fileNames);
-
-  log(`🔎 Listing visit-data entries under: ${config.visitData.s3PrefixBase}/`);
-  const objects = await logVisitDataEntries(config.visitData.s3PrefixBase);
+async function fetchAndSaveVisitData(dateStr) {
+  const datePrefix = buildVisitDataPrefix(dateStr);
+  log(`🔎 Listing visit-data entries under: ${datePrefix}/`);
+  const { fileNames, objects } = await listVisitDataEntries(datePrefix);
+  console.log(`VISIT_DATA filenames for ${dateStr}:`, fileNames);
   const files = (objects || []).filter((f) => (f.Key || '').toLowerCase().endsWith('.csv'));
 
   if (files.length === 0) {
-    log(`⚠️ No CSV files found under ${config.visitData.s3PrefixBase}/`);
-    return { rows: [], fileKey: null, fileName: null };
+    log(`⚠️ No CSV files found under ${datePrefix}/ for date ${dateStr}`);
+    return { rows: [], fileKey: null, fileName: null, dateStr };
   }
 
-  // Pick the newest file by LastModified.
+  // Multiple files can land in the same day's folder; pick the newest by LastModified.
   const latestFile = files.sort((a, b) => new Date(b.LastModified) - new Date(a.LastModified))[0];
-  log(`📄 Selected visit-data file: ${latestFile.Key}`);
+  log(`📄 Selected visit-data file for ${dateStr}: ${latestFile.Key}`);
 
   const fileObj = await s3Client.send(new GetObjectCommand({
     Bucket: config.aws.s3.bucket,
@@ -226,7 +196,8 @@ async function fetchAndSaveVisitData() {
   };
 }
 
-// Allow the stored procedure plenty of time on large volumes (mirrors s3Service).
+// integration_visit_data_temp is the reporting table itself (not a staging table
+// for a stored procedure), so syncs must append/replace-in-place rather than wipe it.
 const SYNC_QUERY_TIMEOUT_MS = 30 * 60 * 1000; // 30 minutes
 
 async function syncVisitDataToDatabase(rows) {
@@ -245,13 +216,22 @@ async function syncVisitDataToDatabase(rows) {
 
     await connection.beginTransaction();
 
-    // TODO: confirm tempTable name in config.visitData.tempTable.
-    await connection.query(`TRUNCATE TABLE ${config.visitData.tempTable}`);
-    log(`🗑️ Cleared ${config.visitData.tempTable} before inserting new visit data`);
-
-    // TODO: insertColumns / keysToStore in config must match the real table schema.
     const columns = config.visitData.insertColumns;
-    const insertQuery = `INSERT INTO ${config.visitData.tempTable} (${columns.join(', ')}) VALUES ?`;
+    const tempTable = config.visitData.tempTable;
+
+    // Re-syncing a date should replace just that date's rows, not the whole table.
+    // Delete by the exact VISIT_DT values present in this batch (whatever format the
+    // source CSV uses) rather than a date we format ourselves, so it can't mismatch.
+    const visitDates = Array.from(new Set(rows.map((row) => row.VISIT_DT).filter((v) => v !== undefined && v !== null && v !== '')));
+    if (visitDates.length > 0) {
+      const [deleteResult] = await connection.query(
+        `DELETE FROM ${tempTable} WHERE VISIT_DT IN (?)`,
+        [visitDates]
+      );
+      log(`🗑️ Removed ${deleteResult.affectedRows} existing ${tempTable} rows for VISIT_DT in [${visitDates.join(', ')}] before re-insert`);
+    }
+
+    const insertQuery = `INSERT INTO ${tempTable} (${columns.join(', ')}) VALUES ?`;
     const values = rows.map((row) => config.visitData.keysToStore.map((key) => row[key] ?? null));
 
     const INSERT_BATCH_SIZE = 5000;
@@ -259,16 +239,8 @@ async function syncVisitDataToDatabase(rows) {
       const batch = values.slice(i, i + INSERT_BATCH_SIZE);
       // eslint-disable-next-line no-await-in-loop
       await connection.query(insertQuery, [batch]);
-      log(`🗃️ Inserted ${Math.min(i + batch.length, values.length)}/${values.length} rows into ${config.visitData.tempTable}`);
+      log(`🗃️ Inserted ${Math.min(i + batch.length, values.length)}/${values.length} rows into ${tempTable}`);
     }
-
-    // TODO: replace with the real stored procedure name and action payload for visit data.
-    const obj = { action: 'VISIT_DATA' };
-    const [procedureResults] = await connection.query({
-      sql: `CALL sp_sync_attendance_master('${JSON.stringify(obj)}')`,
-      timeout: SYNC_QUERY_TIMEOUT_MS
-    });
-    log(`📊 Visit-data stored procedure result: ${JSON.stringify(procedureResults)}`);
 
     await connection.commit();
     log('✅ Visit-data transaction committed successfully');
@@ -281,38 +253,87 @@ async function syncVisitDataToDatabase(rows) {
   }
 }
 
-async function syncVisitData() {
+async function syncVisitData(dateStr) {
+  const targetDate = dateStr || moment().format('YYYY-MM-DD');
   try {
-    const { rows, fileKey, fileName } = await fetchAndSaveVisitData();
+    const { rows, fileKey, fileName } = await fetchAndSaveVisitData(targetDate);
     if (rows.length > 0) {
       await syncVisitDataToDatabase(rows);
       return {
+        date: targetDate,
         selectedFile: fileKey,
         fileName,
         rowCount: rows.length
       };
     } else {
-      log('⚠️ No visit data to insert; skipping DB sync.');
+      log(`⚠️ No visit data to insert for ${targetDate}; skipping DB sync.`);
       return {
+        date: targetDate,
         selectedFile: null,
         fileName: null,
         rowCount: 0
       };
     }
   } catch (error) {
-    log(`❌ Error in visit-data sync: ${error.message}`);
+    log(`❌ Error in visit-data sync for ${targetDate}: ${error.message}`);
     throw error;
   }
 }
 
 async function syncVisitDataRange(startDate, endDate) {
-  log(`⚠️ Date range arguments (${startDate} to ${endDate}) are ignored for visit-data sync right now.`);
-  return syncVisitData();
+  const start = moment(startDate, 'YYYY-MM-DD', true);
+  const end = moment(endDate, 'YYYY-MM-DD', true);
+
+  if (!start.isValid() || !end.isValid()) {
+    throw new Error('Invalid date format. Please use YYYY-MM-DD');
+  }
+
+  if (end.isBefore(start)) {
+    throw new Error('endDate must be after startDate');
+  }
+
+  log(`🔄 Starting visit-data sync for date range: ${startDate} to ${endDate}`);
+
+  const results = [];
+  const currentDate = start.clone();
+  let totalProcessed = 0;
+  let totalErrors = 0;
+
+  while (currentDate.isSameOrBefore(end)) {
+    const dateStr = currentDate.format('YYYY-MM-DD');
+    log(`📅 Processing visit-data date: ${dateStr}`);
+
+    try {
+      const summary = await syncVisitData(dateStr);
+      totalProcessed++;
+      results.push({ date: dateStr, status: 'success', ...summary });
+      log(`✅ Successfully processed visit-data date: ${dateStr}`);
+    } catch (error) {
+      totalErrors++;
+      results.push({ date: dateStr, status: 'error', message: error.message });
+      log(`❌ Error processing visit-data date ${dateStr}: ${error.message}`);
+      // Continue with next date even if one fails
+    }
+
+    currentDate.add(1, 'days');
+  }
+
+  log(`✅ Visit-data range sync completed. Processed: ${totalProcessed}, Errors: ${totalErrors}`);
+
+  return {
+    startDate,
+    endDate,
+    totalDates: results.length,
+    successful: totalProcessed,
+    failed: totalErrors,
+    results
+  };
 }
 
 module.exports = {
   transformVisitRow,
   listVisitDataEntries,
+  buildVisitDataPrefix,
   fetchAndSaveVisitData,
   syncVisitDataToDatabase,
   syncVisitData,
