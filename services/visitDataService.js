@@ -237,6 +237,26 @@ async function syncVisitDataToDatabase(rows) {
     const columns = config.visitData.insertColumns;
     const tempTable = config.visitData.tempTable;
 
+    // ON DUPLICATE KEY UPDATE silently degrades to a plain INSERT (no error)
+    // when the table has no unique key for it to trigger on. Since the old
+    // DELETE-before-insert safety net is gone, verify a UNIQUE index on
+    // ORDER_ID actually exists before inserting anything, so a missing schema
+    // migration fails loudly instead of silently duplicating rows on re-sync.
+    const [[{ cnt: uniqueOrderIdKeyCount }]] = await connection.query(
+      `SELECT COUNT(*) AS cnt
+       FROM INFORMATION_SCHEMA.STATISTICS
+       WHERE TABLE_SCHEMA = DATABASE()
+         AND TABLE_NAME = ?
+         AND COLUMN_NAME = 'ORDER_ID'
+         AND NON_UNIQUE = 0`,
+      [tempTable]
+    );
+    if (uniqueOrderIdKeyCount === 0) {
+      throw new Error(
+        `${tempTable} is missing a UNIQUE KEY on ORDER_ID; upsert-by-ORDER_ID would silently degrade to duplicate inserts`
+      );
+    }
+
     // Syncs append/upsert by ORDER_ID rather than truncating by date: a real
     // ORDER_ID updates its existing row on re-sync, while a blank ORDER_ID
     // (stored as NULL) always inserts as a new row, since MySQL unique keys
