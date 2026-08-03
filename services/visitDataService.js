@@ -237,20 +237,16 @@ async function syncVisitDataToDatabase(rows) {
     const columns = config.visitData.insertColumns;
     const tempTable = config.visitData.tempTable;
 
-    // Re-syncing a date should replace just that date's rows, not the whole table.
-    // Delete by the exact VISIT_DT values present in this batch (whatever format the
-    // source CSV uses) rather than a date we format ourselves, so it can't mismatch.
-    const visitDates = Array.from(new Set(rows.map((row) => row.VISIT_DT).filter((v) => v !== undefined && v !== null && v !== '')));
-    if (visitDates.length > 0) {
-      const [deleteResult] = await connection.query(
-        `DELETE FROM ${tempTable} WHERE VISIT_DT IN (?)`,
-        [visitDates]
-      );
-      log(`🗑️ Removed ${deleteResult.affectedRows} existing ${tempTable} rows for VISIT_DT in [${visitDates.join(', ')}] before re-insert`);
-    }
-
-    const insertQuery = `INSERT INTO ${tempTable} (${columns.join(', ')}) VALUES ?`;
-    const values = rows.map((row) => config.visitData.keysToStore.map((key) => row[key] ?? null));
+    // Syncs append/upsert by ORDER_ID rather than truncating by date: a real
+    // ORDER_ID updates its existing row on re-sync, while a blank ORDER_ID
+    // (stored as NULL) always inserts as a new row, since MySQL unique keys
+    // allow multiple NULLs to coexist.
+    const updateClause = buildUpsertUpdateClause(columns, 'ORDER_ID');
+    const insertQuery = `INSERT INTO ${tempTable} (${columns.join(', ')}) VALUES ? ON DUPLICATE KEY UPDATE ${updateClause}`;
+    const values = rows.map((row) => config.visitData.keysToStore.map((key) => {
+      const value = row[key] ?? null;
+      return key === 'ORDER_ID' ? normalizeOrderId(value) : value;
+    }));
 
     const INSERT_BATCH_SIZE = 5000;
     for (let i = 0; i < values.length; i += INSERT_BATCH_SIZE) {
