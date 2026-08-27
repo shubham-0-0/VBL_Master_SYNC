@@ -8,7 +8,7 @@ const readline = require("readline");
 const moment = require("moment");
 const config = require("../config/config");
 const { log } = require("../utils/logger");
-const { cleanupDirectories } = require("../utils/fileCleanup");
+const { archiveFileToBlob, deleteLocalFile } = require("../utils/fileCleanup");
 
 // Initialize S3 client
 const s3Client = new S3Client({
@@ -184,112 +184,135 @@ async function processAndReturnData(folder, tag, targetDateStr) {
     fs.writeFileSync(uploadPath, Buffer.from(fileBuffer));
     log(`📥 Saved ${tag} file to ${uploadPath}`);
 
-    // If Excel, use existing xlsx parsing with chunked transformation
-    if (fileName.endsWith(".xlsx")) {
-      let rawData = [];
-      const workbook = xlsx.read(Buffer.from(fileBuffer), { type: "buffer" });
-      const sheet = workbook.Sheets[workbook.SheetNames[0]];
-      rawData = xlsx.utils.sheet_to_json(sheet);
-
-      log(`📦 Rows parsed: ${rawData.length} from ${fileName}`);
-
-      if (rawData.length === 0) {
-        log(`⚠️ Empty file skipped: ${fileName}`);
-        return [];
+    // Archives + deletes the local working copy once parsing is done (whichever
+    // branch below returns). Archiving is per-run/date, so flipping the flag off
+    // later never touches files already archived on earlier dates.
+    const archiveAndCleanup = () => {
+      if (config.storage.route.enabled) {
+        const archiveDateStr = targetDateStr && !isNaN(new Date(targetDateStr).getTime())
+          ? moment(targetDateStr).format('YYYY-MM-DD')
+          : moment().format('YYYY-MM-DD');
+        const blobDir = path.join(config.storage.basePath, config.storage.route.folder, archiveDateStr);
+        try {
+          const archivedPath = archiveFileToBlob(uploadPath, blobDir, `${tag}_${fileName}`);
+          log(`📦 Archived ${tag} file to ${archivedPath}`);
+        } catch (archiveError) {
+          log(`⚠️ Failed to archive ${tag} file: ${archiveError.message}`);
+        }
       }
+      deleteLocalFile(uploadPath);
+    };
+
+    try {
+      // If Excel, use existing xlsx parsing with chunked transformation
+      if (fileName.endsWith(".xlsx")) {
+        let rawData = [];
+        const workbook = xlsx.read(Buffer.from(fileBuffer), { type: "buffer" });
+        const sheet = workbook.Sheets[workbook.SheetNames[0]];
+        rawData = xlsx.utils.sheet_to_json(sheet);
+
+        log(`📦 Rows parsed: ${rawData.length} from ${fileName}`);
+
+        if (rawData.length === 0) {
+          log(`⚠️ Empty file skipped: ${fileName}`);
+          return [];
+        }
+
+        const transformed = [];
+        const CHUNK_SIZE = 5000;
+        for (let i = 0; i < rawData.length; i += CHUNK_SIZE) {
+          const upper = Math.min(i + CHUNK_SIZE, rawData.length);
+          for (let j = i; j < upper; j++) {
+            const row = rawData[j];
+            if (i === 0 && j === 0) console.log(`🔍 First row from ${tag}:`, row);
+            transformed.push(transformRow(row, tag));
+          }
+          log(`⚙️ Processed ${upper}/${rawData.length} rows for ${tag}`);
+          // eslint-disable-next-line no-await-in-loop
+          await new Promise((resolve) => setImmediate(resolve));
+        }
+
+        log(`✅ Processed ${transformed.length} rows from ${tag}`);
+        return transformed;
+      }
+
+      // CSV: stream line-by-line to keep memory bounded
+      const parseCsvLine = (line, delimiter) => {
+        const result = [];
+        let current = '';
+        let inQuotes = false;
+        for (let i = 0; i < line.length; i++) {
+          const ch = line[i];
+          if (ch === '"') {
+            if (inQuotes && line[i + 1] === '"') { // escaped quote
+              current += '"';
+              i++;
+            } else {
+              inQuotes = !inQuotes;
+            }
+          } else if (ch === delimiter && !inQuotes) {
+            result.push(current);
+            current = '';
+          } else {
+            current += ch;
+          }
+        }
+        result.push(current);
+        return result.map(s => s.trim());
+      };
+
+      const detectDelimiter = (headerLine) => {
+        const candidates = [',', '|', ';', '\t'];
+        let best = ',';
+        let bestCount = -1;
+        for (const d of candidates) {
+          const count = (headerLine.match(new RegExp(`\\${d}`, 'g')) || []).length;
+          if (count > bestCount) {
+            best = d === '\\t' ? '\t' : d;
+            bestCount = count;
+          }
+        }
+        return best;
+      };
 
       const transformed = [];
-      const CHUNK_SIZE = 5000;
-      for (let i = 0; i < rawData.length; i += CHUNK_SIZE) {
-        const upper = Math.min(i + CHUNK_SIZE, rawData.length);
-        for (let j = i; j < upper; j++) {
-          const row = rawData[j];
-          if (i === 0 && j === 0) console.log(`🔍 First row from ${tag}:`, row);
-          transformed.push(transformRow(row, tag));
+      const CHUNK_SIZE = 10000;
+      let processed = 0;
+      let headers = null;
+      let delimiter = ',';
+
+      const rl = readline.createInterface({
+        input: fs.createReadStream(uploadPath, { encoding: 'utf8' })
+      });
+
+      for await (const line of rl) {
+        if (!headers) {
+          delimiter = detectDelimiter(line);
+          log(`🧭 Detected CSV delimiter '${delimiter === '\t' ? 'TAB' : delimiter}' for ${tag}`);
+          headers = parseCsvLine(line, delimiter);
+          continue;
         }
-        log(`⚙️ Processed ${upper}/${rawData.length} rows for ${tag}`);
-        // eslint-disable-next-line no-await-in-loop
-        await new Promise((resolve) => setImmediate(resolve));
+        const values = parseCsvLine(line, delimiter);
+        const rowObj = {};
+        for (let idx = 0; idx < headers.length; idx++) {
+          rowObj[headers[idx]] = values[idx] ?? '';
+        }
+        if (processed === 0) console.log(`🔍 First row from ${tag}:`, rowObj);
+        transformed.push(transformRow(rowObj, tag));
+        processed++;
+
+        if (processed % CHUNK_SIZE === 0) {
+          log(`⚙️ Processed ${processed} rows for ${tag} (streaming CSV)`);
+          // eslint-disable-next-line no-await-in-loop
+          await new Promise((resolve) => setImmediate(resolve));
+        }
       }
 
-      log(`✅ Processed ${transformed.length} rows from ${tag}`);
+      log(`✅ Processed ${processed} rows from ${tag}`);
       return transformed;
+    } finally {
+      archiveAndCleanup();
     }
-
-    // CSV: stream line-by-line to keep memory bounded
-    const parseCsvLine = (line, delimiter) => {
-      const result = [];
-      let current = '';
-      let inQuotes = false;
-      for (let i = 0; i < line.length; i++) {
-        const ch = line[i];
-        if (ch === '"') {
-          if (inQuotes && line[i + 1] === '"') { // escaped quote
-            current += '"';
-            i++;
-          } else {
-            inQuotes = !inQuotes;
-          }
-        } else if (ch === delimiter && !inQuotes) {
-          result.push(current);
-          current = '';
-        } else {
-          current += ch;
-        }
-      }
-      result.push(current);
-      return result.map(s => s.trim());
-    };
-
-    const detectDelimiter = (headerLine) => {
-      const candidates = [',', '|', ';', '\t'];
-      let best = ',';
-      let bestCount = -1;
-      for (const d of candidates) {
-        const count = (headerLine.match(new RegExp(`\\${d}`, 'g')) || []).length;
-        if (count > bestCount) {
-          best = d === '\\t' ? '\t' : d;
-          bestCount = count;
-        }
-      }
-      return best;
-    };
-
-    const transformed = [];
-    const CHUNK_SIZE = 10000;
-    let processed = 0;
-    let headers = null;
-    let delimiter = ',';
-
-    const rl = readline.createInterface({
-      input: fs.createReadStream(uploadPath, { encoding: 'utf8' })
-    });
-
-    for await (const line of rl) {
-      if (!headers) {
-        delimiter = detectDelimiter(line);
-        log(`🧭 Detected CSV delimiter '${delimiter === '\t' ? 'TAB' : delimiter}' for ${tag}`);
-        headers = parseCsvLine(line, delimiter);
-        continue;
-      }
-      const values = parseCsvLine(line, delimiter);
-      const rowObj = {};
-      for (let idx = 0; idx < headers.length; idx++) {
-        rowObj[headers[idx]] = values[idx] ?? '';
-      }
-      if (processed === 0) console.log(`🔍 First row from ${tag}:`, rowObj);
-      transformed.push(transformRow(rowObj, tag));
-      processed++;
-
-      if (processed % CHUNK_SIZE === 0) {
-        log(`⚙️ Processed ${processed} rows for ${tag} (streaming CSV)`);
-        // eslint-disable-next-line no-await-in-loop
-        await new Promise((resolve) => setImmediate(resolve));
-      }
-    }
-
-    log(`✅ Processed ${processed} rows from ${tag}`);
-    return transformed;
   } catch (error) {
     log(`❌ Error processing ${tag} data: ${error.message}`);
     throw error;

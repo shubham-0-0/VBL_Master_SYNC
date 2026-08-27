@@ -1,5 +1,10 @@
 require('dotenv').config();
 
+// Accepts '1'/'true'/'yes' (case-insensitive) as enabled; anything else (including unset) is disabled.
+function isFlagEnabled(value) {
+  return ['1', 'true', 'yes'].includes(String(value || '').trim().toLowerCase());
+}
+
 module.exports = {
   aws: {
     s3: {
@@ -33,6 +38,25 @@ module.exports = {
   },
   directories: {
     upload: 'upload'
+  },
+  // Blob-storage mount for archiving synced source files, organized by sync
+  // type and date: <basePath>/<folder>/<YYYY-MM-DD>/<fileName>. Each sync's
+  // archiving can be toggled independently, and flipping a flag off only
+  // stops future archiving - it never touches files already written.
+  storage: {
+    basePath: process.env.UPLOAD_DIRECTORY_PATH || '/appdir/CampusBlob/client/vegahrzaunl7avbl/vegahr-backend/',
+    distributor: {
+      enabled: isFlagEnabled(process.env.STORE_DISTRIBUTOR_FILES),
+      folder: 'distributor'
+    },
+    route: {
+      enabled: isFlagEnabled(process.env.STORE_ROUTE_FILES),
+      folder: 'route'
+    },
+    visitData: {
+      enabled: isFlagEnabled(process.env.STORE_VISIT_DATA_FILES),
+      folder: 'visit_data'
+    }
   },
   visitData: {
     // Bucket is configured separately; this is the key prefix inside that bucket.

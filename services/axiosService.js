@@ -6,7 +6,7 @@ const { log } = require('../utils/logger');
 const xlsx = require('xlsx');
 const fs = require('fs');
 const path = require('path'); 
-const { cleanupDirectories } = require('../utils/fileCleanup');
+const { archiveFileToBlob, deleteLocalFile } = require('../utils/fileCleanup');
 
 async function requestWithRetry(url, headers, maxAttempts = 3) {
   let attempt = 0;
@@ -103,17 +103,30 @@ async function fetchDistributorData(dateOrRange) {
     const timestamp = (dateOrRange ? new Date(dateOrRange) : new Date()).toISOString().replace(/[:.]/g, "-");
     const outputFileName = `DBR${timestamp}.csv`;
     const outputPath = path.join(config.directories.upload, outputFileName);
-    
+
       const worksheet = xlsx.utils.json_to_sheet(rows);
       const csvBuffer = xlsx.write(
             { Sheets: { data: worksheet }, SheetNames: ["data"] },
             { type: "buffer", bookType: "csv" }
           );
-    
+
           fs.writeFileSync(outputPath, csvBuffer);
           log(`✅ Final combined CSV saved at ${outputPath}`);
-    
-    
+
+          // Archive to blob storage (if enabled), then always delete the local
+          // temp copy - this file is never read back, so it can go immediately.
+          if (config.storage.distributor.enabled) {
+            const archiveDateStr = moment(dateOrRange || undefined).format('YYYY-MM-DD');
+            const blobDir = path.join(config.storage.basePath, config.storage.distributor.folder, archiveDateStr);
+            try {
+              const archivedPath = archiveFileToBlob(outputPath, blobDir, outputFileName);
+              log(`📦 Archived distributor file to ${archivedPath}`);
+            } catch (archiveError) {
+              log(`⚠️ Failed to archive distributor file: ${archiveError.message}`);
+            }
+          }
+          deleteLocalFile(outputPath);
+
     // Transform the data to match our required format
     return rows.map(row => ({
       Distributor_Code: row.customerCode,
@@ -203,10 +216,6 @@ async function syncDistributorData(dateOrRange) {
     const distributorData = await fetchDistributorData(dateOrRange);
     await syncDistributorDataToDatabase(distributorData);
     log('✅ Distributor data sync completed successfully');
-    
-
-    // Clean up files after successful sync
-    //await cleanupDirectories([config.directories.upload]);
   } catch (error) {
     log(`❌ Error in distributor data sync: ${error.message}`);
     throw error;

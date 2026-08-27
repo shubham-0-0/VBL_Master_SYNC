@@ -4,7 +4,7 @@ const { syncVisitData } = require('../controllers/visitDataController');
 const { log } = require('../utils/logger');
 
 router.post('/sync', async (req, res) => {
-  log('🔄 Starting visit-data sync using the latest discovered CSV file...');
+  log('🔄 Starting visit-data sync...');
   await syncVisitData(req, res);
 });
 

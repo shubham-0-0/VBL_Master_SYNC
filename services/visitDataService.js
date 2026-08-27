@@ -6,6 +6,7 @@ const readline = require('readline');
 const moment = require('moment');
 const config = require('../config/config');
 const { log } = require('../utils/logger');
+const { archiveFileToBlob, deleteLocalFile } = require('../utils/fileCleanup');
 
 // Reuse the same S3 credentials/region/bucket as the outlet sync.
 const s3Client = new S3Client({
@@ -68,22 +69,11 @@ function detectDelimiter(headerLine) {
   return best;
 }
 
-// Blank ORDER_NO must become SQL NULL, not '', so MySQL's unique-key-allows-
-// multiple-NULLs semantics make blank-ORDER_NO rows always insert as new
-// rows instead of colliding with each other on the ORDER_NO unique key.
+// Blank ORDER_NO must become SQL NULL, not '', for consistent storage.
 function normalizeOrderId(value) {
   if (value === undefined || value === null) return null;
   if (typeof value === 'string' && value.trim() === '') return null;
   return value;
-}
-
-// Builds the "col=VALUES(col), ..." clause for ON DUPLICATE KEY UPDATE,
-// skipping the unique-key column itself.
-function buildUpsertUpdateClause(columns, excludeColumn) {
-  return columns
-    .filter((col) => col !== excludeColumn)
-    .map((col) => `\`${col}\`=VALUES(\`${col}\`)`)
-    .join(', ');
 }
 
 async function listVisitDataEntries(basePrefix) {
@@ -179,34 +169,51 @@ async function fetchAndSaveVisitData(dateStr) {
   let headers = null;
   let delimiter = ',';
 
-  const rl = readline.createInterface({
-    input: fs.createReadStream(savePath, { encoding: 'utf8' })
-  });
+  try {
+    const rl = readline.createInterface({
+      input: fs.createReadStream(savePath, { encoding: 'utf8' })
+    });
 
-  for await (const line of rl) {
-    if (!headers) {
-      delimiter = detectDelimiter(line);
-      log(`🧭 Detected CSV delimiter '${delimiter === '\t' ? 'TAB' : delimiter}' for visit_data`);
-      headers = parseCsvLine(line, delimiter);
-      continue;
-    }
-    if (line.trim() === '') continue;
-    const values = parseCsvLine(line, delimiter);
-    const rowObj = {};
-    for (let idx = 0; idx < headers.length; idx++) {
-      rowObj[headers[idx]] = values[idx] ?? '';
-    }
-    transformed.push(transformVisitRow(rowObj, processed + 1));
-    processed++;
+    for await (const line of rl) {
+      if (!headers) {
+        delimiter = detectDelimiter(line);
+        log(`🧭 Detected CSV delimiter '${delimiter === '\t' ? 'TAB' : delimiter}' for visit_data`);
+        headers = parseCsvLine(line, delimiter);
+        continue;
+      }
+      if (line.trim() === '') continue;
+      const values = parseCsvLine(line, delimiter);
+      const rowObj = {};
+      for (let idx = 0; idx < headers.length; idx++) {
+        rowObj[headers[idx]] = values[idx] ?? '';
+      }
+      transformed.push(transformVisitRow(rowObj, processed + 1));
+      processed++;
 
-    if (processed % CHUNK_SIZE === 0) {
-      log(`⚙️ Parsed ${processed} visit-data rows (streaming CSV)`);
-      // eslint-disable-next-line no-await-in-loop
-      await new Promise((resolve) => setImmediate(resolve));
+      if (processed % CHUNK_SIZE === 0) {
+        log(`⚙️ Parsed ${processed} visit-data rows (streaming CSV)`);
+        // eslint-disable-next-line no-await-in-loop
+        await new Promise((resolve) => setImmediate(resolve));
+      }
     }
+
+    log(`✅ Parsed ${processed} visit-data rows from ${fileName}`);
+  } finally {
+    // Archive the raw file to blob storage (if enabled) before removing the local
+    // working copy - flipping the flag off later never touches earlier archives,
+    // since only this exact local path is ever deleted.
+    if (config.storage.visitData.enabled) {
+      const blobDir = path.join(config.storage.basePath, config.storage.visitData.folder, dateStr);
+      try {
+        const archivedPath = archiveFileToBlob(savePath, blobDir, fileName);
+        log(`📦 Archived visit-data file to ${archivedPath}`);
+      } catch (archiveError) {
+        log(`⚠️ Failed to archive visit-data file: ${archiveError.message}`);
+      }
+    }
+    deleteLocalFile(savePath);
   }
 
-  log(`✅ Parsed ${processed} visit-data rows from ${fileName}`);
   return {
     rows: transformed,
     fileKey: latestFile.Key,
@@ -237,32 +244,9 @@ async function syncVisitDataToDatabase(rows) {
     const columns = config.visitData.insertColumns;
     const tempTable = config.visitData.tempTable;
 
-    // ON DUPLICATE KEY UPDATE silently degrades to a plain INSERT (no error)
-    // when the table has no unique key for it to trigger on. Since the old
-    // DELETE-before-insert safety net is gone, verify a UNIQUE index on
-    // ORDER_NO actually exists before inserting anything, so a missing schema
-    // migration fails loudly instead of silently duplicating rows on re-sync.
-    const [[{ cnt: uniqueOrderNoKeyCount }]] = await connection.query(
-      `SELECT COUNT(*) AS cnt
-       FROM INFORMATION_SCHEMA.STATISTICS
-       WHERE TABLE_SCHEMA = DATABASE()
-         AND TABLE_NAME = ?
-         AND COLUMN_NAME = 'ORDER_NO'
-         AND NON_UNIQUE = 0`,
-      [tempTable]
-    );
-    if (uniqueOrderNoKeyCount === 0) {
-      throw new Error(
-        `${tempTable} is missing a UNIQUE KEY on ORDER_NO; upsert-by-ORDER_NO would silently degrade to duplicate inserts`
-      );
-    }
-
-    // Syncs append/upsert by ORDER_NO rather than truncating by date: a real
-    // ORDER_NO updates its existing row on re-sync, while a blank ORDER_NO
-    // (stored as NULL) always inserts as a new row, since MySQL unique keys
-    // allow multiple NULLs to coexist.
-    const updateClause = buildUpsertUpdateClause(columns, 'ORDER_NO');
-    const insertQuery = `INSERT INTO ${tempTable} (${columns.join(', ')}) VALUES ? ON DUPLICATE KEY UPDATE ${updateClause}`;
+    // Plain append insert: ORDER_NO carries no unique key, so re-syncing the
+    // same rows inserts them again rather than updating in place.
+    const insertQuery = `INSERT INTO ${tempTable} (${columns.join(', ')}) VALUES ?`;
     const values = rows.map((row) => config.visitData.keysToStore.map((key) => {
       const value = row[key] ?? null;
       return key === 'ORDER_NO' ? normalizeOrderId(value) : value;
@@ -372,6 +356,5 @@ module.exports = {
   syncVisitDataToDatabase,
   syncVisitData,
   syncVisitDataRange,
-  normalizeOrderId,
-  buildUpsertUpdateClause
+  normalizeOrderId
 };
