@@ -106,7 +106,7 @@ function transformRow(row, uploadType) {
   return transformed;
 }
 
-async function processAndReturnData(folder, tag, targetDateStr) {
+async function processAndReturnData(folder, tag, targetDateStr, localDir = config.directories.upload) {
   try {
     // List objects in the folder
     const listCommand = new ListObjectsV2Command({
@@ -175,7 +175,7 @@ async function processAndReturnData(folder, tag, targetDateStr) {
 
     const fileObj = await s3Client.send(getCommand);
     const fileName = path.basename(latestFile.Key);
-    const uploadPath = path.join(config.directories.upload, `${tag}_${fileName}`);
+    const uploadPath = path.join(localDir, `${tag}_${fileName}`);
 
     // Convert stream to buffer
     const fileBuffer = await fileObj.Body.transformToByteArray();
@@ -407,7 +407,7 @@ async function syncDataToDatabase(data) {
 async function syncS3Data(targetDateStr) {
   try {
     const samnaData = []//await processAndReturnData("SAMNA/", "samna", targetDateStr);
-    const speedData = await processAndReturnData("SPEED/", "speed", targetDateStr);
+    const speedData = await processAndReturnData("SPEED/", "speed", targetDateStr, config.directories.route);
 
     const combinedData = [...samnaData, ...speedData];
 

@@ -102,7 +102,7 @@ async function fetchDistributorData(dateOrRange) {
 
     const timestamp = (dateOrRange ? new Date(dateOrRange) : new Date()).toISOString().replace(/[:.]/g, "-");
     const outputFileName = `DBR${timestamp}.csv`;
-    const outputPath = path.join(config.directories.upload, outputFileName);
+    const outputPath = path.join(config.directories.distributor, outputFileName);
 
       const worksheet = xlsx.utils.json_to_sheet(rows);
       const csvBuffer = xlsx.write(

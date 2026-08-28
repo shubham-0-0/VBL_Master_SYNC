@@ -37,7 +37,9 @@ module.exports = {
     }
   },
   directories: {
-    upload: 'upload'
+    upload: 'upload',
+    distributor: 'upload/distributor',
+    route: 'upload/route'
   },
   // Blob-storage mount for archiving synced source files, organized by sync
   // type and date: <basePath>/<folder>/<YYYY-MM-DD>/<fileName>. Each sync's
